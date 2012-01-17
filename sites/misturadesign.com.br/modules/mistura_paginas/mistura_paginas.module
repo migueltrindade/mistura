@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the mistura_paginas feature.
+ */
+
+include_once('mistura_paginas.features.inc');

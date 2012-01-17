@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the mistura_categorias feature.
+ */
+
+include_once('mistura_categorias.features.inc');

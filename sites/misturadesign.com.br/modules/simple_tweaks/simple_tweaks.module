@@ -1,0 +1,157 @@
+<?php
+/**
+ * @file
+ */
+
+/**
+ * Implements hook_init().
+ */
+function simple_tweaks_init() { 
+  //drupal_add_js(drupal_get_path('module', 'simple_tweaks') . '/js/simple_tweaks.js');
+  drupal_add_css(drupal_get_path('module', 'simple_tweaks') . '/css/simple_tweaks.css');
+}
+
+/**
+ * Implements hook_permission().
+ */
+function simple_tweaks_permission() {
+  return array(
+    'acessar administracao' => array(
+      'title' => t('Acessar administração'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function simple_tweaks_menu() {
+  $items = array();
+
+  $items['admin/website'] = array(
+    'title' => 'Administração',
+    'description' => 'Administração',
+    'page callback' => 'system_admin_menu_block_page',
+    'access arguments' => array('acessar administracao'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'system.admin.inc',
+    'file path' => drupal_get_path('module', 'system')
+  );
+  
+  $items['admin/website/blocos'] = array(
+    'title' => 'Blocos do site',
+    'description' => 'Administração dos blocos disponíveis no site',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('_simple_tweaks_blocos_admin'),
+    'access arguments' => array('acessar administracao'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  return $items;
+}
+
+
+
+function _simple_tweaks_blocos_admin(&$form_state) {
+  
+  $blocos = _simple_tweaks_retorna_array_blocos();
+  
+  foreach($blocos as $index => $bloco) {
+    
+    $fieldset_name = 'fieldset_' . $index;
+    
+    $form[$fieldset_name] = array(
+      '#type' => 'fieldset',
+      '#title' => 'Bloco: ' . $bloco['title'],
+      '#collapsible' => true,
+      '#collapsed' => true
+      
+    );
+    if($bloco['use_title']) {
+      $form[$fieldset_name]['title_' . $index] = array(
+        '#type' => 'textfield',
+        '#title' => 'Título',
+        '#default_value' => $bloco['title']
+      );
+    }
+   
+    $form[$fieldset_name]['body_' . $index] = array(
+      '#type' => 'text_format',
+      '#title' => 'Corpo',
+      '#default_value' => $bloco['body'],
+      '#format' => 'simple'
+    );
+   
+  }
+  
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'Salvar'
+  );
+  
+  return $form;
+}
+
+function _simple_tweaks_blocos_admin_submit($form, &$form_state) {
+  $blocos = _simple_tweaks_retorna_array_blocos();
+  
+  foreach($blocos as $index => $bloco) {
+    if($bloco['use_title']) {
+      variable_set('title_' . $index, $form_state['values']['title_' . $index]);
+    }
+    variable_set('body_' . $index, $form_state['values']['body_' . $index]['value']);
+  }
+  drupal_set_message('Os blocos foram salvos com sucesso.');
+}
+
+function simple_tweaks_block_info() {
+  
+  $blocos = _simple_tweaks_retorna_array_blocos();
+  
+  foreach($blocos as $index => $bloco) {
+    $blocks[$index] = array(
+      'info' => t($bloco['title']), 
+      'cache' => DRUPAL_NO_CACHE,
+    );
+  }
+  return $blocks;
+}
+
+function simple_tweaks_block_view($delta = '') {
+  
+  $blocos = _simple_tweaks_retorna_array_blocos();
+  $block = array();
+
+  if($blocos[$delta]['use_title']) {
+    $block['subject'] = $blocos[$delta]['title'];
+  }
+  $block['content'] = $blocos[$delta]['body'];
+  return $block;
+}
+
+
+
+function _simple_tweaks_retorna_array_blocos() {
+  $blocos = array();
+  $blocos['telefone'] = array(
+    'title' => variable_get('title_telefone', 'Telefone rodapé'),
+    'body' => variable_get('body_telefone', ''),
+    'use_title' => false
+  );
+  $blocos['copyright'] = array(
+    'title' => variable_get('title_copyright', 'Copyright Rodapé'),
+    'body' => variable_get('body_copyright', ''),
+    'use_title' => false
+  );
+  $blocos['texto_portfolio'] = array(
+    'title' => variable_get('title_texto_portfolio', 'Texto do Portfólio'),
+    'body' => variable_get('body_texto_portfolio', ''),
+    'use_title' => false
+  );
+  $blocos['texto_internas'] = array(
+    'title' => variable_get('title_texto_internas', 'Texto das Páginas Internas'),
+    'body' => variable_get('body_texto_internas', ''),
+    'use_title' => false
+  );
+  return $blocos;
+}

@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the mistura_portfolio feature.
+ */
+
+include_once('mistura_portfolio.features.inc');

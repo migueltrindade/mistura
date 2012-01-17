@@ -1,0 +1,379 @@
+@font-face {
+    font-family: 'SommetRoundedBold';
+    src: url('fonts/sommet/sommet_rounded_bold-webfont.eot');
+    src: url('fonts/sommet/sommet_rounded_bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/sommet/sommet_rounded_bold-webfont.woff') format('woff'),
+         url('fonts/sommet/sommet_rounded_bold-webfont.ttf') format('truetype'),
+         url('fonts/sommet/sommet_rounded_bold-webfont.svg#SommetRoundedBold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'SommetRoundedLight';
+    src: url('fonts/sommet/sommet_rounded_light-webfont.eot');
+    src: url('fonts/sommet/sommet_rounded_light-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/sommet/sommet_rounded_light-webfont.woff') format('woff'),
+         url('fonts/sommet/sommet_rounded_light-webfont.ttf') format('truetype'),
+         url('fonts/sommet/sommet_rounded_light-webfont.svg#SommetRoundedLight') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'SommetRoundedRegular';
+    src: url('fonts/sommet/sommet_rounded_regular-webfont.eot');
+    src: url('fonts/sommet/sommet_rounded_regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/sommet/sommet_rounded_regular-webfont.woff') format('woff'),
+         url('fonts/sommet/sommet_rounded_regular-webfont.ttf') format('truetype'),
+         url('fonts/sommet/sommet_rounded_regular-webfont.svg#SommetRoundedRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+html, body {
+  min-height: 100%;
+}
+
+a {
+  text-decoration:  none;
+}
+body {
+  background: #411b5c url('../images/bg-body.jpg') center top repeat-y;
+  padding: 0 0 100px;
+}
+
+body .wrapper-container {
+  background-image: url('../images/bg-header-home.jpg');
+  background-repeat: repeat-x;
+  background-position: 0 -432px;
+}
+
+body.front .wrapper-container {
+  background-position: center top;
+}
+
+/**
+ * Structure
+ */
+.container { margin:0 auto; width:990px; } /* fixed or liquid */
+
+.main { width:100%; position:relative; float:left; color: #FFF; }
+.no-sidebars .main { float:none; }
+
+.sidebar-first .wrapper-columns,
+.two-sidebars .wrapper-columns { padding-left:220px; }
+.sidebar-second .wrapper-columns,
+.two-sidebars .wrapper-columns { padding-right:220px; }
+ 
+.sidebar { width:200px; float:left; position:relative; }
+.first_sidebar { margin-left:-100%; right:220px; padding-right: 20px; }
+.second_sidebar { margin-right:-220px; padding-left: 20px; }
+
+.breadcrumb {
+  display: none;
+}
+.page-title {
+  font-size: 20px;
+  color: #ec7c1e;
+  font-weight: normal;
+}
+
+a        { color: #ec7c1e; }
+a:hover  { color: #FFF; }
+/**
+ * Header
+ */
+ 
+.header-page {
+  height: 180px;
+  position: relative;
+}
+.front .header-page {
+  height: 511px;
+  background: url('../images/mistura_liquidificador.png') 355px bottom no-repeat;
+  margin: 0 0 20px;
+}
+.site-name {
+  display: none;
+}
+.not-front .logo {
+  width: 386px;
+  height: 175px;
+  margin: 0 auto;
+  display: block;
+}
+.front .logo {
+  padding: 30px 0 0 0;
+  float: left;
+}
+
+/**
+ * Footer
+ */
+.footer-page {
+  background: url('../images/bg-footer-top.jpg') 0 0 repeat-x;
+  padding: 20px 0 0 0;
+  margin: 20px 0 0 0;
+  color: #ec7c1e;
+}
+.footer-middle {
+  text-align: center;
+}
+#block-simple-tweaks-copyright {
+  width:200px;
+  float: left;
+  padding: 0 0 0 55px;
+  background: url('../images/logo-footer.png') 0 0 no-repeat;
+}
+#block-simple-tweaks-telefone {
+  font-family: 'SommetRoundedLight';
+  font-size: 15px; 
+  position: relative;
+  z-index: 1;
+  float: left;
+  margin: 0 0 0 105px;
+  width:460px;
+}
+
+/**
+ * Menu Principal
+ */
+
+#block-system-main-menu {
+  float:right;
+  height: 85px;
+}
+.not-front #block-system-main-menu {
+  position: absolute;
+  right: 0;
+  z-index: 20;
+}
+#block-system-main-menu h3 {
+  display: none;
+}
+#block-system-main-menu ul,
+#block-system-main-menu li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+#block-system-main-menu li {
+  display: inline-block;
+  margin: 0 30px 0 0;
+  padding: 35px 0 0 0;
+}
+#block-system-main-menu li.last {
+  margin: 0;
+}
+#block-system-main-menu li a {
+  font-size: 14px;
+  text-transform: uppercase;
+  font-family: 'SommetRoundedBold';
+  text-shadow:1px 1px 1px #FFF;
+  color:#5c2781;
+}
+
+.front #block-system-main-menu li.first {
+  background: url('../images/menu-item-active.png') 0 0 no-repeat;
+  width: 83px;
+  height: 84px;
+  text-align: center;
+  padding: 43px 0 0 0;
+}
+
+
+
+
+/**
+ * Redes Sociais
+ */
+ 
+.header-page #block-views-redessociais-block {
+  float: left;
+  padding: 25px 0 0 0;
+  line-height: 21px;
+  text-transform: lowercase;
+}
+.footer-page #block-views-redessociais-block,
+.footer-page #block-views-redessociais-block--2 {
+  float: right;
+}
+#block-views-redessociais-block ul,
+#block-views-redessociais-block--2 ul,
+#block-views-redessociais-block li,
+#block-views-redessociais-block--2 li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: none;
+}
+#block-views-redessociais-block li,
+#block-views-redessociais-block--2 li {
+  display: inline-block;
+  margin: 0 3px 0;
+}
+#block-views-redessociais-block header {
+  float: left;
+  margin: 0 5px 0 0;
+}
+#block-views-redessociais-block h3 {
+  font-family: 'SommetRoundedLight';
+  font-size: 16px;
+  font-weight: normal;
+  color:#5c2781;
+}
+#block-views-redessociais-block .content {
+  float: left;
+}
+#block-views-redessociais-block--2 h3,
+.front #block-views-redessociais-block h3 {
+  display: none;
+}
+
+
+
+
+
+/**
+ * Porfolio
+ */
+ 
+/* visualizacao dos itens */
+.node-type-portfolio .field-name-body,
+.node-type-portfolio .page-title { 
+ display: none;
+}
+
+/* Bloco das infos */
+#block-views-portfolio-block-1 .portifolio-item-title {
+ font-size: 18px;
+ font-weight: normal;
+ color: #ec7c1e;
+ margin: 0 0 20px 0;
+ line-height: 1.3;
+}
+#block-views-portfolio-block-1 .portifolio-item-description {
+ color: #FFF;
+ border-bottom: 1px solid #ec7c1e;
+ padding: 0 0 10px 0;
+}
+#block-easy-social-easy-social-block-1 h3 {
+ color: #ec7c1e;
+ padding: 0 0 10px 0;
+}
+
+/* Menu de Categorias do Portfolio */
+#block-views-categoria-block .views-row {
+  margin: 0 0 5px;
+}
+#block-views-categoria-block .views-row a {
+  height: 27px;
+  line-height: 27px;
+  color:#ef7d00;
+  display: block;
+  font-family: 'SommetRoundedLight';
+  font-size: 18px;
+  padding: 0 0 0 7px;
+}
+#block-views-categoria-block .views-row a:hover,
+#block-views-categoria-block .views-row a.active {
+  background: #ef7d00 url('../images/arrow-menu-categoria.png') right center no-repeat;
+  color: #5c2781;
+}
+
+/* Texto abaixo das categorias do portfolio */
+#block-simple-tweaks-texto-portfolio {
+  color: #FFF;
+  font-family: 'SommetRoundedLight';
+  font-size: 20px;
+}
+
+/* listagem principal e bloco da home */
+
+.portfolio-view-display-id-page_1 {
+  font-family: 'SommetRoundedLight';
+  padding: 20px 0 0;
+}
+.portfolio-view-display-id-page_1 .view-content {
+  overflow: hidden;
+}
+.portfolio-view-display-id-page .views-row,
+.portfolio-view-display-id-page_1 .views-row {
+  width: 229px;
+  height: 237px;
+  position: relative;
+  float: left;
+  margin: 0 30px 30px 0;
+}
+.portfolio-view-display-id-page_1 .views-row {
+  margin: 0 24px 0 0; 
+}
+.portfolio-view-display-id-page_1 .views-row-last {
+  margin: 0;
+}
+.portfolio-view-display-id-page .views-row:nth-child(3n) {
+  margin: 0 0 30px;
+}
+.portfolio-view-display-id-page .views-field-field-portfolio-chamada,
+.portfolio-view-display-id-page_1 .views-field-field-portfolio-chamada {
+  width: 189px;
+  height: 197px;
+  position: absolute;
+  z-index: 20;
+  background-color: rgba(236, 124, 30, .9);
+  display: none;
+  padding: 20px;
+  font-size: 16px;
+  font-family: 'SommetRoundedLight';
+  color:#5c2781;
+  cursor: pointer;
+}
+.portfolio-view-display-id-page .views-row:hover .views-field-field-portfolio-chamada,
+.portfolio-view-display-id-page_1 .views-row:hover .views-field-field-portfolio-chamada {
+  display: block;
+}
+.portfolio-view-display-id-page .title-portfolio,
+.portfolio-view-display-id-page_1 .title-portfolio {
+  margin: 0 0 15px 0;
+}
+.portfolio-view-display-id-page .title-portfolio a,
+.portfolio-view-display-id-page_1 .title-portfolio a {
+  color:#5c2781;
+  font-weight: bold;
+}
+
+
+
+
+
+/**
+ * Texto das paginas Internas
+ */
+
+#block-simple-tweaks-texto-internas {
+  font-family: 'SommetRoundedLight';
+}
+
+.front #block-simple-tweaks-texto-internas {
+  width:330px;
+  color:#5c2781;
+  font-size: 45px;
+  padding: 80px 0 0 0;
+  text-shadow:1px 1px 1px #FFF;
+} 
+.not-front #block-simple-tweaks-texto-internas .content {
+  font-size: 31px;
+  text-align: center;
+  padding: 20px 100px;
+  color: #FFF;
+  line-height: 1.3;
+  letter-spacing: 1px;
+}
+
+
+
