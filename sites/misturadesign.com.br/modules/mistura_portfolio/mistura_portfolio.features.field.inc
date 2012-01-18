@@ -46,9 +46,8 @@ function mistura_portfolio_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'hidden',
-          'module' => 'text',
           'settings' => array(),
-          'type' => 'text_default',
+          'type' => 'hidden',
           'weight' => '0',
         ),
         'teaser' => array(
@@ -135,10 +134,9 @@ function mistura_portfolio_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'node_reference',
           'settings' => array(),
-          'type' => 'node_reference_default',
-          'weight' => 3,
+          'type' => 'hidden',
+          'weight' => '3',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -198,10 +196,9 @@ function mistura_portfolio_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'text',
           'settings' => array(),
-          'type' => 'text_default',
-          'weight' => 4,
+          'type' => 'hidden',
+          'weight' => '4',
         ),
         'teaser' => array(
           'label' => 'above',
