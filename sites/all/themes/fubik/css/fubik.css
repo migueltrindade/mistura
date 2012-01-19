@@ -1,0 +1,148 @@
+body {
+  min-width: 1000px;
+}
+
+/* tweak table headers, make more like Seven */
+table th {
+  text-transform: uppercase;
+  padding: 5px 10px;
+}
+
+/* fix autocomplete deluxe */
+
+html.js input.form-autocomplete {
+  width: 95%;
+}
+
+/* improve form item spacing */
+
+.filter-wrapper .form-item,
+div.teaser-checkbox .form-item,
+.form-item .form-item {
+  border: 0 none;
+  margin: 0;
+  padding: 5px 0;
+}
+
+/* tweak submit buttons */
+
+/*input.teaser-button,
+input.form-submit {
+  background-image: url(images/buttons.png);
+}*/
+
+/* fix for Views UI pager links */
+
+#edit-display-settings-title,
+.views-display-settings .ctools-toggle,
+div.views-displays .views-ui-display-tab-bucket.pager a span,
+div.views-displays .pager a {
+  color: #5599AA;
+}
+
+#main-content {
+  width: 96%;
+  position: relative;
+  float: left;
+  margin: 0 2%;
+}
+
+.fubik-no-sidebars #main-content {
+  float: none;
+  width: auto;
+  margin: 0 30px;
+}
+
+.fubik-sidebar-first #page,
+.fubik-two-sidebars #page {
+  padding-left:230px; /* width of sidebar + margin */
+}
+
+.fubik-sidebar-second #page,
+.fubik-two-sidebars #page {
+  padding-right:230px; /* width of sidebar + margin */
+}
+ 
+.sidebar {
+  width:200px;
+  float:left;
+  position:relative;
+}
+
+.first_sidebar {
+  margin-left:-100%;
+  right:200px;
+}
+
+.second_sidebar {
+  margin-right:-200px;
+}
+
+#footer {
+  margin: 10px 0 20px;
+}
+
+.secondary-tabs {
+  z-index: 100;
+}
+
+/* Module List */
+
+a.module-link {
+  display: block;
+  padding: 1px 0 1px 20px;
+  white-space: nowrap;
+}
+
+a.module-link-help {
+  background: url("/misc/help.png") no-repeat scroll 0 50% transparent;
+}
+
+a.module-link-permissions {
+  background: url("/misc/permissions.png") no-repeat scroll 0 50% transparent;
+}
+
+a.module-link-configure {
+  background: url("/misc/configure.png") no-repeat scroll 0 50% transparent;
+}
+
+/* Admin Views */
+
+body.page-admin div.view-header {
+  padding: 2px 5px 4px 5px;
+}
+
+body.page-admin div.view-header a.action-add {
+  background: url('../images/ico-add.gif') 0 1px no-repeat;
+  padding-left: 22px;
+}
+
+body.page-admin div.view-header a.action-view {
+  background: url('../images/ico-view.gif') 0 1px no-repeat;
+  padding-left: 22px;
+  float: right;
+}
+
+body.page-admin div.view-footer a.top {
+  float: right;
+  margin-bottom: -10px;
+  position: relative;
+  top: -10px;
+}
+
+body.page-admin div.view-empty {
+  margin-top: 10px;
+  padding: 1px 0 0 34px;
+  text-shadow: 1px 1px 1px #ccc;
+  background: url('../images/ico-warning.gif') 5px 0 no-repeat;
+}
+
+body.page-admin td.views-field-delete-node a {
+  background: url('../images/ico-delete.gif') 0 0 no-repeat;
+  padding-left: 22px;
+}
+
+body.page-admin td.views-field-edit-node a {
+  background: url('../images/ico-edit.gif') 0 0 no-repeat;
+  padding-left: 22px;
+}
