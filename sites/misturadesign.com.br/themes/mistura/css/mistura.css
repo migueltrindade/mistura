@@ -34,25 +34,20 @@
 
 }
 
-
 html, body {
   min-height: 100%;
-}
-
-a {
-  text-decoration:  none;
 }
 body {
   background: #411b5c url('../images/bg-body.jpg') center top repeat-y;
   padding: 0 0 100px;
+  font-family: Tahoma;
+  font-size: 87%;
 }
-
 body .wrapper-container {
   background-image: url('../images/bg-header-home.jpg');
   background-repeat: repeat-x;
   background-position: 0 -432px;
 }
-
 body.front .wrapper-container {
   background-position: center top;
 }
@@ -79,12 +74,17 @@ body.front .wrapper-container {
 }
 .page-title {
   font-size: 20px;
-  color: #ec7c1e;
-  font-weight: normal;
+  color: #ec7c1e;  
 }
 
-a        { color: #ec7c1e; }
-a:hover  { color: #FFF; }
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'SommetRoundedLight';
+  font-weight: normal;
+}
+a         { color: #ec7c1e; text-decoration: none; }
+a:hover   { color: #FFF; }
+p         { margin-bottom: .7em; }
+
 /**
  * Header
  */
@@ -127,8 +127,10 @@ a:hover  { color: #FFF; }
 #block-simple-tweaks-copyright {
   width:200px;
   float: left;
-  padding: 0 0 0 55px;
+  padding: 3px 0 3px 35px;
   background: url('../images/logo-footer.png') 0 0 no-repeat;
+  font-family: 'Verdana';
+  font-size: 10px;
 }
 #block-simple-tweaks-telefone {
   font-family: 'SommetRoundedLight';
@@ -224,7 +226,6 @@ a:hover  { color: #FFF; }
 #block-views-redessociais-block h3 {
   font-family: 'SommetRoundedLight';
   font-size: 16px;
-  font-weight: normal;
   color:#5c2781;
 }
 #block-views-redessociais-block .content {
@@ -248,23 +249,38 @@ a:hover  { color: #FFF; }
 .node-type-portfolio .page-title { 
  display: none;
 }
+.node-type-portfolio .field-name-field-portfolio-imagens .field-item {
+  margin:0 0 20px;
+}
 
 /* Bloco das infos */
 #block-views-portfolio-block-1 .portifolio-item-title {
- font-size: 18px;
+ font-size: 19px;
  font-weight: normal;
+ text-transform: uppercase;
  color: #ec7c1e;
- margin: 0 0 20px 0;
+ margin: 0 0 10px 0;
  line-height: 1.3;
 }
 #block-views-portfolio-block-1 .portifolio-item-description {
  color: #FFF;
- border-bottom: 1px solid #ec7c1e;
  padding: 0 0 10px 0;
+ font-family: 'SommetRoundedLight';
+ font-size: 14px;
+}
+#block-easy-social-easy-social-block-1 {
+  border-top: 1px solid #ec7c1e;
+  padding-top:7px;
 }
 #block-easy-social-easy-social-block-1 h3 {
  color: #ec7c1e;
  padding: 0 0 10px 0;
+ font-size: 14px;
+ font-weight: bold;
+}
+#block-easy-social-easy-social-block-1 .easy_social-widget {
+  float: none; 
+  margin: 0 0 3px;
 }
 
 /* Menu de Categorias do Portfolio */
