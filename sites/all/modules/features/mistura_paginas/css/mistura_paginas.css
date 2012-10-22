@@ -1,0 +1,8 @@
+body.page-admin-website-paginas #page-title .page-title span.icon,
+body.page-node-add-pagina #page-title .page-title span.icon {
+  background: url('../images/icons/page_title.png') !important;
+}
+
+#block-features-admin-features-admin-menu .menu-path-admin-website-paginas > a {
+  background: url(../images/icons/page.png);
+}

@@ -1,0 +1,144 @@
+/**
+ * Global configuration
+*/
+
+body.fubik {
+  background-color: #F9F9F9;
+}
+
+#page-title {
+  margin: 0 0 20px;
+  border-bottom: 1px solid #e2e2e2;
+}
+
+/* home */
+body.page-admin-website #page-title .page-title span.icon {
+  background-image: url('../images/icons/home_title.png');
+}
+/* settings */
+body.page-admin-website-settings #page-title .page-title span.icon {
+  background-image: url('../images/icons/settings_title.png');
+}
+
+/**
+ * Menu Admin
+*/
+#block-features-admin-features-admin-menu,
+#block-features-admin-features-admin-menu .block-content {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-shadow:none !important;
+  border-radius:0 !important;
+}
+#block-features-admin-features-admin-menu {
+  margin: 0 0 20px 0 !important;
+}
+#block-features-admin-features-admin-menu ul,
+#block-features-admin-features-admin-menu li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-radius:none;
+}
+#block-features-admin-features-admin-menu .block-content > ul {
+  border-top: 1px solid #E2E2E2;
+}
+#block-features-admin-features-admin-menu ul.nice-menu li {
+  border: 1px solid #E2E2E2;
+  border-top: 0;
+  float: left; /* LTR */
+  background-color: #FFF;
+  background-image: url(../images/bg-menu-item.png);
+  background-repeat: repeat-x;
+  background-position: left bottom;
+  background-image: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    color-stop(0.5, rgb(255,255,255)),
+    color-stop(1, rgb(242,242,242))
+    );
+  background-image: -moz-linear-gradient(
+    center top,
+    rgb(255,255,255) 50%,
+    rgb(242,242,242) 100%
+    );
+}
+#block-features-admin-features-admin-menu ul.nice-menu li:hover {
+  float: left;
+  background: #f4f4f4;
+}
+#block-features-admin-features-admin-menu ul.nice-menu li a {
+  padding: 10px 10px 10px 36px;
+  color:#444;
+  background-repeat: no-repeat;
+  background-position: 10px center;
+}
+#block-features-admin-features-admin-menu ul.nice-menu ul {
+  top: 1.8em;
+  left: -1px;
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin-right: 0;
+}
+#block-features-admin-features-admin-menu ul.nice-menu ul li {
+  width: 200px;
+}
+#block-features-admin-features-admin-menu ul.nice-menu ul li a {
+  padding: 10px;
+  color:#444;
+}
+#block-features-admin-features-admin-menu ul.nice-menu li a span {
+  display: block;
+}
+/******************************
+ VERTICAL (right)
+******************************/
+#block-features-admin-features-admin-menu ul.nice-menu-right  {
+  width: 200px;
+}
+#block-features-admin-features-admin-menu ul.nice-menu-right li {
+  width: 198px;
+}
+#block-features-admin-features-admin-menu ul.nice-menu-right ul,
+#block-features-admin-features-admin-menu ul.nice-menu-right ul ul{
+  width: 200px;
+  left: 198px;
+  top: -1px;
+}
+#block-features-admin-features-admin-menu ul.nice-menu-right li.menuparent > a span,
+#block-features-admin-features-admin-menu ul.nice-menu-right li li.menuparent > a span {
+  background: url(../images/icons/arrow-right.png) right center no-repeat;
+}
+
+/* icones */
+#block-features-admin-features-admin-menu .menu-path-admin-website > a {
+  background-image: url(../images/icons/home.png);
+}
+#block-features-admin-features-admin-menu .menu-path-admin-website-settings > a {
+  background-image: url(../images/icons/settings.png);
+}
+#block-features-admin-features-admin-menu .menu-path-user-edit > a {
+  background-image: url(../images/icons/user_edit.png);
+}
+#block-features-admin-features-admin-menu .menu-path-user-logout > a { 
+  background-image: url(../images/icons/logout.png);
+}
+
+/**
+ * Configurações
+*/
+/* removendo opcao de escolher o formato de texto */
+.page-admin-website-settings .text-format-wrapper .form-item {
+  border: 0 !important;
+  padding: 0;
+}
+.page-admin-website-settings .filter-wrapper {
+  display: none !important;
+} 
+
+/* removendo opcao de escolher o idiomas */
+.page-user-edit #edit-locale {
+  display: none;
+}

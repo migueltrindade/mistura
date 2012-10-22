@@ -1,0 +1,74 @@
+<?php
+/**
+ * @file
+ * Code for the features_website feature.
+ */
+
+include_once 'features_website.features.inc';
+
+/**
+ * Implements hook_init().
+ */
+function features_website_init() {
+  drupal_add_js(drupal_get_path('module', 'features_website') . '/js/features_website.js');
+  drupal_add_css(drupal_get_path('module', 'features_website') . '/css/features_website.css');
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function features_website_block_info() {
+  module_load_include('inc', 'features_admin', 'features_admin.admin');
+  $blocos = features_admin_retorna_blocos_info();
+  foreach ($blocos as $index => $bloco) {
+    $blocks[$index] = array(
+      'info' => t($bloco['title']),
+      'cache' => DRUPAL_NO_CACHE,
+    );
+  }
+
+  $blocks['features_redes_sociais'] = array(
+    'info' => 'Redes sociais',
+    'cache' => DRUPAL_NO_CACHE
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function features_website_block_view($delta = '') {
+
+  $block = array();
+  $block['subject'] = '';
+  $block['content'] = '';
+
+  if ($delta == 'features_redes_sociais') {
+
+    $block['subject'] = 'Redes Sociais';
+
+    module_load_include('inc', 'features_admin', 'features_admin.admin');
+    $redes_sociais = features_admin_retorna_redes_sociais();
+    $lista = array();
+
+    foreach ($redes_sociais as $social_index_name => $rede_social) {
+      $url_rede_social = variable_get($social_index_name, '');
+      if (!empty($url_rede_social)) {
+        $lista[] = l($rede_social['titulo'], $url_rede_social, array('html' => true, 'attributes' => array('title' => $rede_social['titulo'], 'target' => '_blank')));
+      }
+    }
+    $content = '';
+    if (sizeof($lista) > 0) {
+      $content = theme('item_list', array('items' => $lista));
+    }
+    $block['content'] = $content;
+    
+  } 
+  else {
+    $block['subject'] = '';
+    $block['content'] = variable_get($delta, '');
+  }
+  
+  return $block;
+}

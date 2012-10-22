@@ -1,0 +1,174 @@
+<?php
+
+/**
+ * @file
+ */
+include_once 'features_admin.features.inc';
+
+
+/**
+ * Constant for Administrator Role ID.
+ */
+define('ROLE_ADMIN', 3);
+
+/**
+ * Implements hook_permission().
+ */
+function features_admin_permission() {
+  return array(
+    'access website admin' => array(
+      'title' => t('Acessar administração do website'),
+    ),
+    'administer website' => array(
+      'title' => t('Administrar o website'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function features_admin_menu() {
+
+  $items = array();
+
+  $items['admin/website'] = array(
+    'title' => 'Website admin',
+    'description' => 'Dashboard de administração',
+    'page callback' => 'features_admin_dashboard',
+    'access callback' => 'user_access',
+    'access arguments' => array('access website admin'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'features_admin.pages.inc',
+  );
+
+  $items['admin/website/home'] = array(
+    'title' => 'Home',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -50,
+  );
+
+  $items['admin/website/settings'] = array(
+    'title' => 'Configurações',
+    'description' => 'Configurações do website',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('features_admin_settings'),
+    'access arguments' => array('administer website'),
+    'file' => 'features_admin.admin.inc',
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 100
+  );
+  
+  $items['user/edit'] = array(
+    'title' => 'Minha conta',
+    'page callback' => 'features_admin_redirect_user_edit',
+    'access arguments' => array('access website admin'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'features_admin.admin.inc',
+    'menu_name' => 'menu-admin-menu',
+    'weight' => 49
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_init().
+ */
+function features_admin_init() {
+  
+  $contexts = context_active_contexts();
+  
+  if (array_key_exists('website_admin_sitewide', $contexts)) {
+    drupal_add_js(drupal_get_path('module', 'features_admin') . '/js/features_admin.js', array('group' => JS_THEME, 'every_page' => TRUE));
+    drupal_add_css(drupal_get_path('module', 'features_admin') . '/css/features_admin.css', array('group' => CSS_THEME, 'every_page' => TRUE));
+  }
+
+  // jQuery Easing Plugin.
+  // @link http://gsgd.co.uk/sandbox/jquery/easing/
+  if ($path = libraries_get_path('jquery.easing')) {
+    drupal_add_js($path . '/jquery.easing.1.3.min.js', array('group' => JS_LIBRARY, 'every_page' => TRUE));
+  }
+
+  // jQuery HoverIntent Plugin.
+  // @link http://cherne.net/brian/resources/jquery.hoverIntent.html
+  if ($path = libraries_get_path('jquery.hoverIntent')) {
+    drupal_add_js($path . '/jquery.hoverIntent.r6.min.js', array('group' => JS_LIBRARY, 'every_page' => TRUE));
+  }
+
+  // jQuery ScrollTo Plugin.
+  // @link http://demos.flesler.com/jquery/scrollTo/
+  if ($path = libraries_get_path('jquery.scrollto')) {
+    drupal_add_js($path . '/jquery.scrollTo-1.4.2-min.js', array('group' => JS_LIBRARY, 'every_page' => TRUE));
+  }
+}
+
+/**
+ * Implements hook_preprocess().
+ *
+ * Adds an extra class to Admin menu items.
+ */
+function features_admin_preprocess_menu_link(&$variables) {
+  if (isset($variables['element']['#theme']) && $variables['element']['#theme'] === 'menu_link__menu_admin_menu') {
+    $classname = array_pop(explode('/', $variables['element']['#href']));
+    $variables['element']['#attributes']['class'][] = $classname;
+  }
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function features_admin_block_info() {
+  $blocks['features_admin_menu'] = array(
+    'info' => t('Features admin menu'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function features_admin_block_view($delta = '') {
+  $block = array();
+
+  switch ($delta) {
+    case 'features_admin_menu':
+      $block['subject'] = '';
+      $block['content'] = features_admin_get_menu_admin();
+      break;
+  }
+  return $block;
+}
+
+/**
+ * Generate a new nice_menu based on admin_menu
+ * 
+ * @return html  
+ */
+function features_admin_get_menu_admin() {
+  $variables = array(
+    'id' => 'features_admin_menu',
+    'menu_name' => 'menu-admin-menu',
+    'direction' => 'right',
+    'depth' => -1
+  );
+  $output = theme('nice_menus', $variables);
+  return $output['content'];
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function features_admin_form_alter(&$form, &$form_state, $form_id) { 
+  unset($form['actions']['preview']);
+}
+
+/**
+ * Implements hook_user_login
+ */
+function features_admin_user_login(&$edit, $account) {
+  if (empty($_GET['destination']) && (!isset($_POST['form_id']) || $_POST['form_id'] != 'user_pass_reset')) {
+    drupal_goto('admin/website');
+  }
+}

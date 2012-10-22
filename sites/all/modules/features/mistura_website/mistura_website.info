@@ -1,0 +1,9 @@
+name = features_website
+core = 7.x
+package = website_admin
+dependencies[] = context
+dependencies[] = ctools
+features[context][] = website_frontpage
+features[context][] = website_sitewide
+features[ctools][] = context:context:3
+features[features_api][] = api:1

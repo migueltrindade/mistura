@@ -1,0 +1,25 @@
+<?php
+/**
+ * @file
+ * Code for the features_paginas feature.
+ */
+
+include_once 'features_paginas.features.inc';
+
+/**
+ * Implements hook_permission().
+ */
+function features_paginas_permission() {
+  return array(
+    'access admin paginas' => array(
+      'title' => t('Acessar administração de páginas'),
+    )
+  );
+}
+
+/**
+ * Implements hook_init().
+ */
+function features_paginas_init() {
+  drupal_add_css(drupal_get_path('module', 'features_paginas') . '/css/features_paginas.css', array('group' => CSS_THEME, 'every_page' => TRUE));
+}
