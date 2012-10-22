@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the mistura_redessociais feature.
- */
-
-include_once('mistura_redessociais.features.inc');
