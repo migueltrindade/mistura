@@ -1,0 +1,31 @@
+name = Mistura
+description = Mistura theme
+core = 7.x
+engine = phptemplate
+
+stylesheets[all][] = css/bootstrap.min.css
+stylesheets[all][] = css/bootstrap-responsive.min.css
+stylesheets[all][] = css/style.css
+
+scripts[] = js/main.js
+
+; default regions
+regions[header] = Header
+regions[sidebar_first] = Sidebar First
+regions[sidebar_second] = Sidebar Second
+regions[content] = Content
+regions[footer] = Footer
+regions[help] = Help
+regions[highlighted] = Highlighted
+
+; custom regions
+regions[redes_sociais] = Redes sociais
+
+regions[outside_top] = Outside Top
+regions[preface] = Preface
+regions[content_top] = Content Top
+regions[content_bottom] = Content Bottom
+regions[postscript] = Postscript
+regions[footer_top] = Footer Top
+regions[footer_bottom] = Footer Bottom
+regions[outside_bottom] = Outside Bottom

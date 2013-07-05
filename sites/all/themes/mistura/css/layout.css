@@ -1,0 +1,23 @@
+/**
+ * Global configuration
+ */
+
+/**
+ * Structure
+ */
+.container { margin:0 auto; width:960px; }
+
+.main { width:100%; position:relative; float:left; }
+.no-sidebars .main { float:none; }
+
+.sidebar-first .wrapper-columns,
+.two-sidebars .wrapper-columns { padding-left:200px; }
+.sidebar-second .wrapper-columns,
+.two-sidebars .wrapper-columns { padding-right:200px; }
+ 
+.sidebar { width:200px; float:left; position:relative; }
+.first_sidebar { margin-left:-100%; right:200px; }
+.second_sidebar { margin-right:-200px; }
+
+
+

@@ -1,0 +1,104 @@
+@font-face {
+	font-family : 'RonniaLightRegular';
+	src         : url('fonts/ronnia/ronnialight-webfont.eot');
+	src         : url('fonts/ronnia/ronnialight-webfont.eot?#iefix') format('embedded-opentype'), url('fonts/ronnia/ronnialight-webfont.woff') format('woff'), url('fonts/ronnia/ronnialight-webfont.ttf') format('truetype'), url('fonts/ronnia/ronnialight-webfont.svg#RonniaLightRegular') format('svg');
+	font-weight : normal;
+	font-style  : normal;
+
+}
+@font-face {
+	font-family : 'RonniaRegular';
+	src         : url('fonts/ronnia/ronniareg-webfont.eot');
+	src         : url('fonts/ronnia/ronniareg-webfont.eot?#iefix') format('embedded-opentype'), url('fonts/ronnia/ronniareg-webfont.woff') format('woff'), url('fonts/ronnia/ronniareg-webfont.ttf') format('truetype'), url('fonts/ronnia/ronniareg-webfont.svg#RonniaRegular') format('svg');
+	font-weight : normal;
+	font-style  : normal;
+}
+
+/**
+ * Global
+*/
+::selection {
+	background : #174F84; color : #FFFFFF; text-shadow : none;
+}
+::-moz-selection {
+	background : #174F84; color : #FFFFFF; text-shadow : none;
+}
+html {
+	background : url('../images/bg.jpg') 0 0 repeat;
+}
+body {
+	/*background : url('../images/bg-header.jpg') 0 0 repeat-x;*/
+}
+
+a {
+	color : #222222;
+}
+a:hover {
+	color           : #111111;
+	text-decoration : none;
+}
+h2, h3 {
+	font-weight : normal;
+}
+/*a.logo {*/
+/*position: absolute;*/
+/*left: 20px;*/
+/*top: 25px;*/
+/*}*/
+
+.container {
+	max-width : 960px;
+}
+
+.site-name,
+.site-slogan {
+	display : none;
+}
+
+.wrapper-header-page {
+	padding          : 0;
+	background-color : #491B69;
+	border-bottom    : 1px solid #8644B4;
+}
+.header-page {
+	min-height  : 67px;
+	line-height : 65px;
+}
+/* Destaque */
+
+.destaque {
+	border-top : 1px solid #491B69;
+	height     : 200px;
+	background : url('../images/bg-destaque.jpg') 0 0 repeat;
+}
+
+#block-system-main-menu li,
+#block-system-main-menu ul {
+	margin     : 0;
+	padding    : 0;
+	list-style : none;
+}
+
+#block-system-main-menu li {
+	display : inline-block;
+	color   : white;
+}
+#block-system-main-menu li a {
+	color : white;
+}
+#block-system-main-menu li a.active,
+#block-system-main-menu li a:hover {
+	color : #FF6600;
+}
+/**
+ * Fix
+*/
+/* fix for removing extra space from admin_menu */
+/*body.admin-menu {*/
+/*margin-top: 0 !important;*/
+/*}*/
+/* remove page title and first time message from home */
+.front .page-title,
+#first-time {
+	display : none;
+}
