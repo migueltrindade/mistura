@@ -72,24 +72,41 @@ class FieldTestCase extends DrupalWebTestCase {
 }
 
 class FieldAttachTestCase extends FieldTestCase {
-  function setUp($modules = array()) {
+  function setUp() {
     // Since this is a base class for many test cases, support the same
     // flexibility that DrupalWebTestCase::setUp() has for the modules to be
     // passed in as either an array or a variable number of string arguments.
-    if (!is_array($modules)) {
-      $modules = func_get_args();
+    $modules = func_get_args();
+    if (isset($modules[0]) && is_array($modules[0])) {
+      $modules = $modules[0];
     }
     if (!in_array('field_test', $modules)) {
       $modules[] = 'field_test';
     }
     parent::setUp($modules);
 
-    $this->field_name = drupal_strtolower($this->randomName() . '_field_name');
-    $this->field = array('field_name' => $this->field_name, 'type' => 'test_field', 'cardinality' => 4);
-    $this->field = field_create_field($this->field);
-    $this->field_id = $this->field['id'];
-    $this->instance = array(
-      'field_name' => $this->field_name,
+    $this->createFieldWithInstance();
+  }
+
+  /**
+   * Create a field and an instance of it.
+   *
+   * @param string $suffix
+   *   (optional) A string that should only contain characters that are valid in
+   *   PHP variable names as well.
+   */
+  function createFieldWithInstance($suffix = '') {
+    $field_name = 'field_name' . $suffix;
+    $field = 'field' . $suffix;
+    $field_id = 'field_id' . $suffix;
+    $instance = 'instance' . $suffix;
+
+    $this->$field_name = drupal_strtolower($this->randomName() . '_field_name' . $suffix);
+    $this->$field = array('field_name' => $this->$field_name, 'type' => 'test_field', 'cardinality' => 4);
+    $this->$field = field_create_field($this->$field);
+    $this->$field_id = $this->{$field}['id'];
+    $this->$instance = array(
+      'field_name' => $this->$field_name,
       'entity_type' => 'test_entity',
       'bundle' => 'test_bundle',
       'label' => $this->randomName() . '_label',
@@ -106,7 +123,7 @@ class FieldAttachTestCase extends FieldTestCase {
         )
       )
     );
-    field_create_instance($this->instance);
+    field_create_instance($this->$instance);
   }
 }
 
@@ -640,13 +657,18 @@ class FieldAttachOtherTestCase extends FieldAttachTestCase {
    * Test field_attach_view() and field_attach_prepare_view().
    */
   function testFieldAttachView() {
+    $this->createFieldWithInstance('_2');
+
     $entity_type = 'test_entity';
     $entity_init = field_test_create_stub_entity();
     $langcode = LANGUAGE_NONE;
+    $options = array('field_name' => $this->field_name_2);
 
     // Populate values to be displayed.
     $values = $this->_generateTestFieldValues($this->field['cardinality']);
     $entity_init->{$this->field_name}[$langcode] = $values;
+    $values_2 = $this->_generateTestFieldValues($this->field_2['cardinality']);
+    $entity_init->{$this->field_name_2}[$langcode] = $values_2;
 
     // Simple formatter, label displayed.
     $entity = clone($entity_init);
@@ -661,14 +683,46 @@ class FieldAttachOtherTestCase extends FieldAttachTestCase {
       ),
     );
     field_update_instance($this->instance);
+    $formatter_setting_2 = $this->randomName();
+    $this->instance_2['display'] = array(
+      'full' => array(
+        'label' => 'above',
+        'type' => 'field_test_default',
+        'settings' => array(
+          'test_formatter_setting' => $formatter_setting_2,
+        )
+      ),
+    );
+    field_update_instance($this->instance_2);
+    // View all fields.
     field_attach_prepare_view($entity_type, array($entity->ftid => $entity), 'full');
     $entity->content = field_attach_view($entity_type, $entity, 'full');
     $output = drupal_render($entity->content);
     $this->content = $output;
-    $this->assertRaw($this->instance['label'], "Label is displayed.");
+    $this->assertRaw($this->instance['label'], "First field's label is displayed.");
     foreach ($values as $delta => $value) {
       $this->content = $output;
       $this->assertRaw("$formatter_setting|{$value['value']}", "Value $delta is displayed, formatter settings are applied.");
+    }
+    $this->assertRaw($this->instance_2['label'], "Second field's label is displayed.");
+    foreach ($values_2 as $delta => $value) {
+      $this->content = $output;
+      $this->assertRaw("$formatter_setting_2|{$value['value']}", "Value $delta is displayed, formatter settings are applied.");
+    }
+    // View single field (the second field).
+    field_attach_prepare_view($entity_type, array($entity->ftid => $entity), 'full', $langcode, $options);
+    $entity->content = field_attach_view($entity_type, $entity, 'full', $langcode, $options);
+    $output = drupal_render($entity->content);
+    $this->content = $output;
+    $this->assertNoRaw($this->instance['label'], "First field's label is not displayed.");
+    foreach ($values as $delta => $value) {
+      $this->content = $output;
+      $this->assertNoRaw("$formatter_setting|{$value['value']}", "Value $delta is displayed, formatter settings are applied.");
+    }
+    $this->assertRaw($this->instance_2['label'], "Second field's label is displayed.");
+    foreach ($values_2 as $delta => $value) {
+      $this->content = $output;
+      $this->assertRaw("$formatter_setting_2|{$value['value']}", "Value $delta is displayed, formatter settings are applied.");
     }
 
     // Label hidden.
@@ -696,7 +750,7 @@ class FieldAttachOtherTestCase extends FieldAttachTestCase {
     $this->content = $output;
     $this->assertNoRaw($this->instance['label'], "Hidden field: label is not displayed.");
     foreach ($values as $delta => $value) {
-      $this->assertNoRaw($value['value'], "Hidden field: value $delta is not displayed.");
+      $this->assertNoRaw("$formatter_setting|{$value['value']}", "Hidden field: value $delta is not displayed.");
     }
 
     // Multiple formatter.
@@ -906,11 +960,13 @@ class FieldAttachOtherTestCase extends FieldAttachTestCase {
    * hook_field_validate.
    */
   function testFieldAttachValidate() {
+    $this->createFieldWithInstance('_2');
+
     $entity_type = 'test_entity';
     $entity = field_test_create_stub_entity(0, 0, $this->instance['bundle']);
     $langcode = LANGUAGE_NONE;
 
-    // Set up values to generate errors
+    // Set up all but one values of the first field to generate errors.
     $values = array();
     for ($delta = 0; $delta < $this->field['cardinality']; $delta++) {
       $values[$delta]['value'] = -1;
@@ -919,6 +975,14 @@ class FieldAttachOtherTestCase extends FieldAttachTestCase {
     $values[1]['value'] = 1;
     $entity->{$this->field_name}[$langcode] = $values;
 
+    // Set up all values of the second field to generate errors.
+    $values_2 = array();
+    for ($delta = 0; $delta < $this->field_2['cardinality']; $delta++) {
+      $values_2[$delta]['value'] = -1;
+    }
+    $entity->{$this->field_name_2}[$langcode] = $values_2;
+
+    // Validate all fields.
     try {
       field_attach_validate($entity_type, $entity);
     }
@@ -928,26 +992,57 @@ class FieldAttachOtherTestCase extends FieldAttachTestCase {
 
     foreach ($values as $delta => $value) {
       if ($value['value'] != 1) {
-        $this->assertIdentical($errors[$this->field_name][$langcode][$delta][0]['error'], 'field_test_invalid', "Error set on value $delta");
-        $this->assertEqual(count($errors[$this->field_name][$langcode][$delta]), 1, "Only one error set on value $delta");
+        $this->assertIdentical($errors[$this->field_name][$langcode][$delta][0]['error'], 'field_test_invalid', "Error set on first field's value $delta");
+        $this->assertEqual(count($errors[$this->field_name][$langcode][$delta]), 1, "Only one error set on first field's value $delta");
         unset($errors[$this->field_name][$langcode][$delta]);
       }
       else {
-        $this->assertFalse(isset($errors[$this->field_name][$langcode][$delta]), "No error set on value $delta");
+        $this->assertFalse(isset($errors[$this->field_name][$langcode][$delta]), "No error set on first field's value $delta");
       }
     }
-    $this->assertEqual(count($errors[$this->field_name][$langcode]), 0, 'No extraneous errors set');
+    foreach ($values_2 as $delta => $value) {
+      $this->assertIdentical($errors[$this->field_name_2][$langcode][$delta][0]['error'], 'field_test_invalid', "Error set on second field's value $delta");
+      $this->assertEqual(count($errors[$this->field_name_2][$langcode][$delta]), 1, "Only one error set on second field's value $delta");
+      unset($errors[$this->field_name_2][$langcode][$delta]);
+    }
+    $this->assertEqual(count($errors[$this->field_name][$langcode]), 0, 'No extraneous errors set for first field');
+    $this->assertEqual(count($errors[$this->field_name_2][$langcode]), 0, 'No extraneous errors set for second field');
+
+    // Validate a single field.
+    $options = array('field_name' => $this->field_name_2);
+    try {
+      field_attach_validate($entity_type, $entity, $options);
+    }
+    catch (FieldValidationException $e) {
+      $errors = $e->errors;
+    }
+
+    foreach ($values_2 as $delta => $value) {
+      $this->assertIdentical($errors[$this->field_name_2][$langcode][$delta][0]['error'], 'field_test_invalid', "Error set on second field's value $delta");
+      $this->assertEqual(count($errors[$this->field_name_2][$langcode][$delta]), 1, "Only one error set on second field's value $delta");
+      unset($errors[$this->field_name_2][$langcode][$delta]);
+    }
+    $this->assertFalse(isset($errors[$this->field_name]), 'No validation errors are set for the first field, despite it having errors');
+    $this->assertEqual(count($errors[$this->field_name_2][$langcode]), 0, 'No extraneous errors set for second field');
 
     // Check that cardinality is validated.
-    $entity->{$this->field_name}[$langcode] = $this->_generateTestFieldValues($this->field['cardinality'] + 1);
+    $entity->{$this->field_name_2}[$langcode] = $this->_generateTestFieldValues($this->field_2['cardinality'] + 1);
+    // When validating all fields.
     try {
       field_attach_validate($entity_type, $entity);
     }
     catch (FieldValidationException $e) {
       $errors = $e->errors;
     }
-    $this->assertEqual($errors[$this->field_name][$langcode][0][0]['error'], 'field_cardinality', t('Cardinality validation failed.'));
-
+    $this->assertEqual($errors[$this->field_name_2][$langcode][0][0]['error'], 'field_cardinality', 'Cardinality validation failed.');
+    // When validating a single field (the second field).
+    try {
+      field_attach_validate($entity_type, $entity, $options);
+    }
+    catch (FieldValidationException $e) {
+      $errors = $e->errors;
+    }
+    $this->assertEqual($errors[$this->field_name_2][$langcode][0][0]['error'], 'field_cardinality', 'Cardinality validation failed.');
   }
 
   /**
@@ -957,34 +1052,59 @@ class FieldAttachOtherTestCase extends FieldAttachTestCase {
    * widgets show up.
    */
   function testFieldAttachForm() {
+    $this->createFieldWithInstance('_2');
+
     $entity_type = 'test_entity';
     $entity = field_test_create_stub_entity(0, 0, $this->instance['bundle']);
+    $langcode = LANGUAGE_NONE;
 
+    // When generating form for all fields.
     $form = array();
     $form_state = form_state_defaults();
     field_attach_form($entity_type, $entity, $form, $form_state);
 
-    $langcode = LANGUAGE_NONE;
-    $this->assertEqual($form[$this->field_name][$langcode]['#title'], $this->instance['label'], "Form title is {$this->instance['label']}");
+    $this->assertEqual($form[$this->field_name][$langcode]['#title'], $this->instance['label'], "First field's form title is {$this->instance['label']}");
+    $this->assertEqual($form[$this->field_name_2][$langcode]['#title'], $this->instance_2['label'], "Second field's form title is {$this->instance_2['label']}");
     for ($delta = 0; $delta < $this->field['cardinality']; $delta++) {
       // field_test_widget uses 'textfield'
-      $this->assertEqual($form[$this->field_name][$langcode][$delta]['value']['#type'], 'textfield', "Form delta $delta widget is textfield");
-    }
+        $this->assertEqual($form[$this->field_name][$langcode][$delta]['value']['#type'], 'textfield', "First field's form delta $delta widget is textfield");
+      }
+      for ($delta = 0; $delta < $this->field_2['cardinality']; $delta++) {
+        // field_test_widget uses 'textfield'
+        $this->assertEqual($form[$this->field_name_2][$langcode][$delta]['value']['#type'], 'textfield', "Second field's form delta $delta widget is textfield");
+      }
+
+      // When generating form for a single field (the second field).
+      $options = array('field_name' => $this->field_name_2);
+      $form = array();
+      $form_state = form_state_defaults();
+      field_attach_form($entity_type, $entity, $form, $form_state, NULL, $options);
+
+      $this->assertFalse(isset($form[$this->field_name]), 'The first field does not exist in the form');
+      $this->assertEqual($form[$this->field_name_2][$langcode]['#title'], $this->instance_2['label'], "Second field's form title is {$this->instance_2['label']}");
+      for ($delta = 0; $delta < $this->field_2['cardinality']; $delta++) {
+        // field_test_widget uses 'textfield'
+        $this->assertEqual($form[$this->field_name_2][$langcode][$delta]['value']['#type'], 'textfield', "Second field's form delta $delta widget is textfield");
+      }
   }
 
   /**
    * Test field_attach_submit().
    */
   function testFieldAttachSubmit() {
-    $entity_type = 'test_entity';
-    $entity = field_test_create_stub_entity(0, 0, $this->instance['bundle']);
+    $this->createFieldWithInstance('_2');
 
-    // Build the form.
+    $entity_type = 'test_entity';
+    $entity_init = field_test_create_stub_entity(0, 0, $this->instance['bundle']);
+    $langcode = LANGUAGE_NONE;
+
+    // Build the form for all fields.
     $form = array();
     $form_state = form_state_defaults();
-    field_attach_form($entity_type, $entity, $form, $form_state);
+    field_attach_form($entity_type, $entity_init, $form, $form_state);
 
     // Simulate incoming values.
+    // First field.
     $values = array();
     $weights = array();
     for ($delta = 0; $delta < $this->field['cardinality']; $delta++) {
@@ -998,22 +1118,59 @@ class FieldAttachOtherTestCase extends FieldAttachTestCase {
     }
     // Leave an empty value. 'field_test' fields are empty if empty().
     $values[1]['value'] = 0;
-
-    $langcode = LANGUAGE_NONE;
+    // Second field.
+    $values_2 = array();
+    $weights_2 = array();
+    for ($delta = 0; $delta < $this->field_2['cardinality']; $delta++) {
+      $values_2[$delta]['value'] = mt_rand(1, 127);
+      // Assign random weight.
+      do {
+        $weight = mt_rand(0, $this->field_2['cardinality']);
+      } while (in_array($weight, $weights_2));
+      $weights_2[$delta] = $weight;
+      $values_2[$delta]['_weight'] = $weight;
+    }
+    // Leave an empty value. 'field_test' fields are empty if empty().
+    $values_2[1]['value'] = 0;
     // Pretend the form has been built.
     drupal_prepare_form('field_test_entity_form', $form, $form_state);
     drupal_process_form('field_test_entity_form', $form, $form_state);
     $form_state['values'][$this->field_name][$langcode] = $values;
+    $form_state['values'][$this->field_name_2][$langcode] = $values_2;
+
+    // Call field_attach_submit() for all fields.
+    $entity = clone($entity_init);
     field_attach_submit($entity_type, $entity, $form, $form_state);
 
     asort($weights);
+    asort($weights_2);
     $expected_values = array();
+    $expected_values_2 = array();
     foreach ($weights as $key => $value) {
       if ($key != 1) {
         $expected_values[] = array('value' => $values[$key]['value']);
       }
     }
     $this->assertIdentical($entity->{$this->field_name}[$langcode], $expected_values, 'Submit filters empty values');
+    foreach ($weights_2 as $key => $value) {
+      if ($key != 1) {
+        $expected_values_2[] = array('value' => $values_2[$key]['value']);
+      }
+    }
+    $this->assertIdentical($entity->{$this->field_name_2}[$langcode], $expected_values_2, 'Submit filters empty values');
+
+    // Call field_attach_submit() for a single field (the second field).
+    $options = array('field_name' => $this->field_name_2);
+    $entity = clone($entity_init);
+    field_attach_submit($entity_type, $entity, $form, $form_state, $options);
+    $expected_values_2 = array();
+    foreach ($weights_2 as $key => $value) {
+      if ($key != 1) {
+        $expected_values_2[] = array('value' => $values_2[$key]['value']);
+      }
+    }
+    $this->assertFalse(isset($entity->{$this->field_name}), 'The first field does not exist in the entity object');
+    $this->assertIdentical($entity->{$this->field_name_2}[$langcode], $expected_values_2, 'Submit filters empty values');
   }
 }
 
@@ -1078,11 +1235,14 @@ class FieldInfoTestCase extends FieldTestCase {
     }
 
     // Verify that no unexpected instances exist.
-    $core_fields = field_info_fields();
+    $instances = field_info_instances('test_entity');
+    $expected = array('test_bundle' => array());
+    $this->assertIdentical($instances, $expected, "field_info_instances('test_entity') returns " . var_export($expected, TRUE) . '.');
     $instances = field_info_instances('test_entity', 'test_bundle');
-    $this->assertTrue(empty($instances), t('With no instances, info bundles is empty.'));
+    $this->assertIdentical($instances, array(), "field_info_instances('test_entity', 'test_bundle') returns an empty array.");
 
     // Create a field, verify it shows up.
+    $core_fields = field_info_fields();
     $field = array(
       'field_name' => drupal_strtolower($this->randomName()),
       'type' => 'test_field',
@@ -1115,9 +1275,41 @@ class FieldInfoTestCase extends FieldTestCase {
           'test_setting' => 999)));
     field_create_instance($instance);
 
+    $info = entity_get_info('test_entity');
     $instances = field_info_instances('test_entity', $instance['bundle']);
-    $this->assertEqual(count($instances), 1, t('One instance shows up in info when attached to a bundle.'));
+    $this->assertEqual(count($instances), 1, format_string('One instance shows up in info when attached to a bundle on a @label.', array(
+      '@label' => $info['label']
+    )));
     $this->assertTrue($instance < $instances[$instance['field_name']], t('Instance appears in info correctly'));
+
+    // Test a valid entity type but an invalid bundle.
+    $instances = field_info_instances('test_entity', 'invalid_bundle');
+    $this->assertIdentical($instances, array(), "field_info_instances('test_entity', 'invalid_bundle') returns an empty array.");
+
+    // Test invalid entity type and bundle.
+    $instances = field_info_instances('invalid_entity', $instance['bundle']);
+    $this->assertIdentical($instances, array(), "field_info_instances('invalid_entity', 'test_bundle') returns an empty array.");
+
+    // Test invalid entity type, no bundle provided.
+    $instances = field_info_instances('invalid_entity');
+    $this->assertIdentical($instances, array(), "field_info_instances('invalid_entity') returns an empty array.");
+
+    // Test with an entity type that has no bundles.
+    $instances = field_info_instances('user');
+    $expected = array('user' => array());
+    $this->assertIdentical($instances, $expected, "field_info_instances('user') returns " . var_export($expected, TRUE) . '.');
+    $instances = field_info_instances('user', 'user');
+    $this->assertIdentical($instances, array(), "field_info_instances('user', 'user') returns an empty array.");
+
+    // Test that querying for invalid entity types does not add entries in the
+    // list returned by field_info_instances().
+    field_info_cache_clear();
+    field_info_instances('invalid_entity', 'invalid_bundle');
+    // Simulate new request by clearing static caches.
+    drupal_static_reset();
+    field_info_instances('invalid_entity', 'invalid_bundle');
+    $instances = field_info_instances();
+    $this->assertFalse(isset($instances['invalid_entity']), 'field_info_instances() does not contain entries for the invalid entity type that was queried before');
   }
 
   /**
@@ -1228,6 +1420,80 @@ class FieldInfoTestCase extends FieldTestCase {
   }
 
   /**
+   * Test field_info_field_map().
+   */
+  function testFieldMap() {
+    // We will overlook fields created by the 'standard' install profile.
+    $exclude = field_info_field_map();
+
+    // Create a new bundle for 'test_entity' entity type.
+    field_test_create_bundle('test_bundle_2');
+
+    // Create a couple fields.
+    $fields  = array(
+      array(
+        'field_name' => 'field_1',
+        'type' => 'test_field',
+      ),
+      array(
+        'field_name' => 'field_2',
+        'type' => 'hidden_test_field',
+      ),
+    );
+    foreach ($fields as $field) {
+      field_create_field($field);
+    }
+
+    // Create a couple instances.
+    $instances = array(
+      array(
+        'field_name' => 'field_1',
+        'entity_type' => 'test_entity',
+        'bundle' => 'test_bundle',
+      ),
+      array(
+        'field_name' => 'field_1',
+        'entity_type' => 'test_entity',
+        'bundle' => 'test_bundle_2',
+      ),
+      array(
+        'field_name' => 'field_2',
+        'entity_type' => 'test_entity',
+        'bundle' => 'test_bundle',
+      ),
+      array(
+        'field_name' => 'field_2',
+        'entity_type' => 'test_cacheable_entity',
+        'bundle' => 'test_bundle',
+      ),
+    );
+    foreach ($instances as $instance) {
+      field_create_instance($instance);
+    }
+
+    $expected = array(
+      'field_1' => array(
+        'type' => 'test_field',
+        'bundles' => array(
+          'test_entity' => array('test_bundle', 'test_bundle_2'),
+        ),
+      ),
+      'field_2' => array(
+        'type' => 'hidden_test_field',
+        'bundles' => array(
+          'test_entity' => array('test_bundle'),
+          'test_cacheable_entity' => array('test_bundle'),
+        ),
+      ),
+    );
+
+    // Check that the field map is correct.
+    $map = field_info_field_map();
+    $map = array_diff_key($map, $exclude);
+    $this->assertEqual($map, $expected);
+  }
+
+  /**
    * Test that the field_info settings convenience functions work.
    */
   function testSettingsInfo() {
@@ -1250,6 +1516,31 @@ class FieldInfoTestCase extends FieldTestCase {
     foreach ($info as $type => $data) {
       $this->assertIdentical(field_info_formatter_settings($type), $data['settings'], "field_info_formatter_settings returns {$type}'s formatter settings");
     }
+  }
+
+  /**
+   * Tests that the field info cache can be built correctly.
+   */
+  function testFieldInfoCache() {
+    // Create a test field and ensure it's in the array returned by
+    // field_info_fields().
+    $field_name = drupal_strtolower($this->randomName());
+    $field = array(
+      'field_name' => $field_name,
+      'type' => 'test_field',
+    );
+    field_create_field($field);
+    $fields = field_info_fields();
+    $this->assertTrue(isset($fields[$field_name]), 'The test field is initially found in the array returned by field_info_fields().');
+
+    // Now rebuild the field info cache, and set a variable which will cause
+    // the cache to be cleared while it's being rebuilt; see
+    // field_test_entity_info(). Ensure the test field is still in the returned
+    // array.
+    field_info_cache_clear();
+    variable_set('field_test_clear_info_cache_in_hook_entity_info', TRUE);
+    $fields = field_info_fields();
+    $this->assertTrue(isset($fields[$field_name]), 'The test field is found in the array returned by field_info_fields() even if its cache is cleared while being rebuilt.');
   }
 }
 
@@ -1459,6 +1750,51 @@ class FieldFormTestCase extends FieldTestCase {
     // Test with several multiple fields in a form
   }
 
+  /**
+   * Tests widget handling of multiple required radios.
+   */
+  function testFieldFormMultivalueWithRequiredRadio() {
+    // Create a multivalue test field.
+    $this->field = $this->field_unlimited;
+    $this->field_name = $this->field['field_name'];
+    $this->instance['field_name'] = $this->field_name;
+    field_create_field($this->field);
+    field_create_instance($this->instance);
+    $langcode = LANGUAGE_NONE;
+
+    // Add a required radio field.
+    field_create_field(array(
+      'field_name' => 'required_radio_test',
+      'type' => 'list_text',
+      'settings' => array(
+        'allowed_values' => array('yes' => 'yes', 'no' => 'no'),
+      ),
+    ));
+    field_create_instance(array(
+      'field_name' => 'required_radio_test',
+      'entity_type' => 'test_entity',
+      'bundle' => 'test_bundle',
+      'required' => TRUE,
+      'widget' => array(
+        'type' => 'options_buttons',
+      ),
+    ));
+
+    // Display creation form.
+    $this->drupalGet('test-entity/add/test-bundle');
+
+    // Press the 'Add more' button.
+    $this->drupalPost(NULL, array(), t('Add another item'));
+
+    // Verify that no error is thrown by the radio element.
+    $this->assertNoFieldByXpath('//div[contains(@class, "error")]', FALSE, 'No error message is displayed.');
+
+    // Verify that the widget is added.
+    $this->assertFieldByName("{$this->field_name}[$langcode][0][value]", '', 'Widget 1 is displayed');
+    $this->assertFieldByName("{$this->field_name}[$langcode][1][value]", '', 'New widget is displayed');
+    $this->assertNoField("{$this->field_name}[$langcode][2][value]", 'No extraneous widget is displayed');
+  }
+
   function testFieldFormJSAddMore() {
     $this->field = $this->field_unlimited;
     $this->field_name = $this->field['field_name'];
@@ -1581,6 +1917,18 @@ class FieldFormTestCase extends FieldTestCase {
     field_create_instance($instance_no_access);
 
     $langcode = LANGUAGE_NONE;
+
+    // Test that the form structure includes full information for each delta
+    // apart from #access.
+    $entity_type = 'test_entity';
+    $entity = field_test_create_stub_entity(0, 0, $this->instance['bundle']);
+
+    $form = array();
+    $form_state = form_state_defaults();
+    field_attach_form($entity_type, $entity, $form, $form_state);
+
+    $this->assertEqual($form[$field_name_no_access][$langcode][0]['value']['#entity_type'], $entity_type, 'The correct entity type is set in the field structure.');
+    $this->assertFalse($form[$field_name_no_access]['#access'], 'Field #access is FALSE for the field without edit access.');
 
     // Display creation form.
     $this->drupalGet('test-entity/add/test-bundle');
@@ -2096,6 +2444,41 @@ class FieldCrudTestCase extends FieldTestCase {
   }
 
   /**
+   * Tests reading field definitions.
+   */
+  function testReadFields() {
+    $field_definition = array(
+      'field_name' => 'field_1',
+      'type' => 'test_field',
+    );
+    field_create_field($field_definition);
+
+    // Check that 'single column' criteria works.
+    $fields = field_read_fields(array('field_name' => $field_definition['field_name']));
+    $this->assertTrue(count($fields) == 1 && isset($fields[$field_definition['field_name']]), 'The field was properly read.');
+
+    // Check that 'multi column' criteria works.
+    $fields = field_read_fields(array('field_name' => $field_definition['field_name'], 'type' => $field_definition['type']));
+    $this->assertTrue(count($fields) == 1 && isset($fields[$field_definition['field_name']]), 'The field was properly read.');
+    $fields = field_read_fields(array('field_name' => $field_definition['field_name'], 'type' => 'foo'));
+    $this->assertTrue(empty($fields), 'No field was found.');
+
+    // Create an instance of the field.
+    $instance_definition = array(
+      'field_name' => $field_definition['field_name'],
+      'entity_type' => 'test_entity',
+      'bundle' => 'test_bundle',
+    );
+    field_create_instance($instance_definition);
+
+    // Check that criteria spanning over the field_config_instance table work.
+    $fields = field_read_fields(array('entity_type' => $instance_definition['entity_type'], 'bundle' => $instance_definition['bundle']));
+    $this->assertTrue(count($fields) == 1 && isset($fields[$field_definition['field_name']]), 'The field was properly read.');
+    $fields = field_read_fields(array('entity_type' => $instance_definition['entity_type'], 'field_name' => $instance_definition['field_name']));
+    $this->assertTrue(count($fields) == 1 && isset($fields[$field_definition['field_name']]), 'The field was properly read.');
+  }
+
+  /**
    * Test creation of indexes on data column.
    */
   function testFieldIndexes() {
@@ -2356,7 +2739,6 @@ class FieldCrudTestCase extends FieldTestCase {
     $this->assertTrue($field_definition <= $field, t('The field was properly read.'));
 
     module_disable($modules, FALSE);
-    drupal_flush_all_caches();
 
     $fields = field_read_fields(array('field_name' => $field_name), array('include_inactive' => TRUE));
     $this->assertTrue(isset($fields[$field_name]) && $field_definition < $field, t('The field is properly read when explicitly fetching inactive fields.'));
@@ -2369,7 +2751,6 @@ class FieldCrudTestCase extends FieldTestCase {
 
       $module = array_shift($modules);
       module_enable(array($module), FALSE);
-      drupal_flush_all_caches();
     }
 
     // Check that the field is active again after all modules have been
@@ -2674,7 +3055,7 @@ class FieldTranslationsTestCase extends FieldTestCase {
 
     // Test field_available_languages() behavior for untranslatable fields.
     $this->field['translatable'] = FALSE;
-    $this->field_name = $this->field['field_name'] = $this->instance['field_name'] = drupal_strtolower($this->randomName() . '_field_name');
+    field_update_field($this->field);
     $available_languages = field_available_languages($this->entity_type, $this->field);
     $this->assertTrue(count($available_languages) == 1 && $available_languages[0] === LANGUAGE_NONE, t('For untranslatable fields only LANGUAGE_NONE is available.'));
   }
@@ -2728,7 +3109,7 @@ class FieldTranslationsTestCase extends FieldTestCase {
     $options = array();
     $entities = array();
     $entity_type = 'test_entity';
-    $entity_count = mt_rand(2, 5);
+    $entity_count = 5;
     $available_languages = field_available_languages($this->entity_type, $this->field);
 
     for ($id = 1; $id <= $entity_count; ++$id) {
@@ -2989,22 +3370,54 @@ class FieldBulkDeleteTestCase extends FieldTestCase {
    */
   function _generateStubEntities($entity_type, $entities, $field_name = NULL) {
     $stubs = array();
-    foreach ($entities as $entity) {
+    foreach ($entities as $id => $entity) {
       $stub = entity_create_stub_entity($entity_type, entity_extract_ids($entity_type, $entity));
       if (isset($field_name)) {
         $stub->{$field_name} = $entity->{$field_name};
       }
-      $stubs[] = $stub;
+      $stubs[$id] = $stub;
     }
     return $stubs;
+  }
+
+  /**
+   * Tests that the expected hooks have been invoked on the expected entities.
+   *
+   * @param $expected_hooks
+   *   An array keyed by hook name, with one entry per expected invocation.
+   *   Each entry is the value of the "$entity" parameter the hook is expected
+   *   to have been passed.
+   * @param $actual_hooks
+   *   The array of actual hook invocations recorded by field_test_memorize().
+   */
+  function checkHooksInvocations($expected_hooks, $actual_hooks) {
+    foreach ($expected_hooks as $hook => $invocations) {
+      $actual_invocations = $actual_hooks[$hook];
+
+      // Check that the number of invocations is correct.
+      $this->assertEqual(count($actual_invocations), count($invocations), "$hook() was called the expected number of times.");
+
+      // Check that the hook was called for each expected argument.
+      foreach ($invocations as $argument) {
+        $found = FALSE;
+        foreach ($actual_invocations as $actual_arguments) {
+          if ($actual_arguments[1] == $argument) {
+            $found = TRUE;
+            break;
+          }
+        }
+        $this->assertTrue($found, "$hook() was called on expected argument");
+      }
+    }
   }
 
   function setUp() {
     parent::setUp('field_test');
 
-    // Clean up data from previous test cases.
     $this->fields = array();
     $this->instances = array();
+    $this->entities = array();
+    $this->entities_by_bundles = array();
 
     // Create two bundles.
     $this->bundles = array('bb_1' => 'bb_1', 'bb_2' => 'bb_2');
@@ -3040,7 +3453,10 @@ class FieldBulkDeleteTestCase extends FieldTestCase {
         foreach ($this->fields as $field) {
           $entity->{$field['field_name']}[LANGUAGE_NONE] = $this->_generateTestFieldValues($field['cardinality']);
         }
+
         $this->entities[$id] = $entity;
+        // Also keep track of the entities per bundle.
+        $this->entities_by_bundles[$bundle][$id] = $entity;
         field_attach_insert($this->entity_type, $entity);
         $id++;
       }
@@ -3105,6 +3521,7 @@ class FieldBulkDeleteTestCase extends FieldTestCase {
    * instance is deleted.
    */
   function testPurgeInstance() {
+    // Start recording hook invocations.
     field_test_memorize();
 
     $bundle = reset($this->bundles);
@@ -3119,7 +3536,7 @@ class FieldBulkDeleteTestCase extends FieldTestCase {
     $this->assertEqual(count($mem), 0, 'No field hooks were called');
 
     $batch_size = 2;
-    for ($count = 8; $count >= 0; $count -= 2) {
+    for ($count = 8; $count >= 0; $count -= $batch_size) {
       // Purge two entities.
       field_purge_batch($batch_size);
 
@@ -3133,19 +3550,21 @@ class FieldBulkDeleteTestCase extends FieldTestCase {
       $this->assertEqual($count ? count($found['test_entity']) : count($found), $count, 'Correct number of entities found after purging 2');
     }
 
-    // hook_field_delete() was called on a pseudo-entity for each entity. Each
-    // pseudo entity has a $field property that matches the original entity,
-    // but no others.
-    $mem = field_test_memorize();
-    $this->assertEqual(count($mem['field_test_field_delete']), 10, 'hook_field_delete was called for the right number of entities');
-    $stubs = $this->_generateStubEntities($this->entity_type, $this->entities, $field['field_name']);
-    $count = count($stubs);
-    foreach ($mem['field_test_field_delete'] as $args) {
-      $entity = $args[1];
-      $this->assertEqual($stubs[$entity->ftid], $entity, 'hook_field_delete() called with the correct stub');
-      unset($stubs[$entity->ftid]);
+    // Check hooks invocations.
+    // - hook_field_load() (multiple hook) should have been called on all
+    // entities by pairs of two.
+    // - hook_field_delete() should have been called once for each entity in the
+    // bundle.
+    $actual_hooks = field_test_memorize();
+    $hooks = array();
+    $stubs = $this->_generateStubEntities($this->entity_type, $this->entities_by_bundles[$bundle], $field['field_name']);
+    foreach (array_chunk($stubs, $batch_size, TRUE) as $chunk) {
+      $hooks['field_test_field_load'][] = $chunk;
     }
-    $this->assertEqual(count($stubs), $count-10, 'hook_field_delete was called with each entity once');
+    foreach ($stubs as $stub) {
+      $hooks['field_test_field_delete'][] = $stub;
+    }
+    $this->checkHooksInvocations($hooks, $actual_hooks);
 
     // The instance still exists, deleted.
     $instances = field_read_instances(array('field_id' => $field['id'], 'deleted' => 1), array('include_deleted' => 1, 'include_inactive' => 1));
@@ -3168,14 +3587,36 @@ class FieldBulkDeleteTestCase extends FieldTestCase {
    * instances are deleted and purged.
    */
   function testPurgeField() {
+    // Start recording hook invocations.
+    field_test_memorize();
+
     $field = reset($this->fields);
 
     // Delete the first instance.
-    $instance = field_info_instance($this->entity_type, $field['field_name'], 'bb_1');
+    $bundle = reset($this->bundles);
+    $instance = field_info_instance($this->entity_type, $field['field_name'], $bundle);
     field_delete_instance($instance);
+
+    // Assert that hook_field_delete() was not called yet.
+    $mem = field_test_memorize();
+    $this->assertEqual(count($mem), 0, 'No field hooks were called.');
 
     // Purge the data.
     field_purge_batch(10);
+
+    // Check hooks invocations.
+    // - hook_field_load() (multiple hook) should have been called once, for all
+    // entities in the bundle.
+    // - hook_field_delete() should have been called once for each entity in the
+    // bundle.
+    $actual_hooks = field_test_memorize();
+    $hooks = array();
+    $stubs = $this->_generateStubEntities($this->entity_type, $this->entities_by_bundles[$bundle], $field['field_name']);
+    $hooks['field_test_field_load'][] = $stubs;
+    foreach ($stubs as $stub) {
+      $hooks['field_test_field_delete'][] = $stub;
+    }
+    $this->checkHooksInvocations($hooks, $actual_hooks);
 
     // Purge again to purge the instance.
     field_purge_batch(0);
@@ -3185,11 +3626,26 @@ class FieldBulkDeleteTestCase extends FieldTestCase {
     $this->assertTrue(isset($fields[$field['id']]) && !$fields[$field['id']]['deleted'], 'The field exists and is not deleted');
 
     // Delete the second instance.
-    $instance = field_info_instance($this->entity_type, $field['field_name'], 'bb_2');
+    $bundle = next($this->bundles);
+    $instance = field_info_instance($this->entity_type, $field['field_name'], $bundle);
     field_delete_instance($instance);
+
+    // Assert that hook_field_delete() was not called yet.
+    $mem = field_test_memorize();
+    $this->assertEqual(count($mem), 0, 'No field hooks were called.');
 
     // Purge the data.
     field_purge_batch(10);
+
+    // Check hooks invocations (same as above, for the 2nd bundle).
+    $actual_hooks = field_test_memorize();
+    $hooks = array();
+    $stubs = $this->_generateStubEntities($this->entity_type, $this->entities_by_bundles[$bundle], $field['field_name']);
+    $hooks['field_test_field_load'][] = $stubs;
+    foreach ($stubs as $stub) {
+      $hooks['field_test_field_delete'][] = $stub;
+    }
+    $this->checkHooksInvocations($hooks, $actual_hooks);
 
     // The field still exists, deleted.
     $fields = field_read_fields(array('id' => $field['id']), array('include_deleted' => 1));

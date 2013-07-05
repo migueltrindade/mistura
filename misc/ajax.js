@@ -318,7 +318,7 @@ Drupal.ajax.prototype.beforeSerialize = function (element, options) {
 Drupal.ajax.prototype.beforeSubmit = function (form_values, element, options) {
   // This function is left empty to make it simple to override for modules
   // that wish to add functionality here.
-}
+};
 
 /**
  * Prepare the Ajax request before it is sent.
@@ -396,7 +396,7 @@ Drupal.ajax.prototype.success = function (response, status) {
   Drupal.freezeHeight();
 
   for (var i in response) {
-    if (response[i]['command'] && this.commands[response[i]['command']]) {
+    if (response.hasOwnProperty(i) && response[i]['command'] && this.commands[response[i]['command']]) {
       this.commands[response[i]['command']](this, response[i], status);
     }
   }

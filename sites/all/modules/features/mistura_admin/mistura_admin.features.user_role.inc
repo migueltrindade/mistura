@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * features_admin.features.user_role.inc
+ * mistura_admin.features.user_role.inc
  */
 
 /**
  * Implements hook_user_default_roles().
  */
-function features_admin_user_default_roles() {
+function mistura_admin_user_default_roles() {
   $roles = array();
 
   // Exported role: admin.

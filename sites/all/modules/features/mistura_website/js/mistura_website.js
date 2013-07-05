@@ -1,7 +1,7 @@
 (function($){
   "use strict";
 
-  Drupal.behaviors.features_website = {
+  Drupal.behaviors.mistura_website = {
     attach: function(context, settings) {
       
     }
@@ -26,3 +26,4 @@ function ajaxStopLoad() {
     jQuery('#load-overlay').remove();
   }
 }
+

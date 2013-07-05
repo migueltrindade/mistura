@@ -12,40 +12,40 @@ body.fubik {
 }
 
 /* home */
-body.page-admin-website #page-title .page-title span.icon {
+body.page-admin-mistura #page-title .page-title span.icon {
   background-image: url('../images/icons/home_title.png');
 }
 /* settings */
-body.page-admin-website-settings #page-title .page-title span.icon {
+body.page-admin-mistura-settings #page-title .page-title span.icon {
   background-image: url('../images/icons/settings_title.png');
 }
 
 /**
  * Menu Admin
 */
-#block-features-admin-features-admin-menu,
-#block-features-admin-features-admin-menu .block-content {
+#block-mistura-admin-mistura-admin-menu,
+#block-mistura-admin-mistura-admin-menu .block-content {
   margin: 0;
   padding: 0;
   border: 0;
   box-shadow:none !important;
   border-radius:0 !important;
 }
-#block-features-admin-features-admin-menu {
+#block-mistura-admin-mistura-admin-menu {
   margin: 0 0 20px 0 !important;
 }
-#block-features-admin-features-admin-menu ul,
-#block-features-admin-features-admin-menu li {
+#block-mistura-admin-mistura-admin-menu ul,
+#block-mistura-admin-mistura-admin-menu li {
   margin: 0;
   padding: 0;
   list-style: none;
   border-radius:none;
 }
-#block-features-admin-features-admin-menu .block-content > ul {
-  border-top: 1px solid #E2E2E2;
+#block-mistura-admin-mistura-admin-menu .block-content > ul {
+  border-top: 1px solid #e2e2e2;
 }
-#block-features-admin-features-admin-menu ul.nice-menu li {
-  border: 1px solid #E2E2E2;
+#block-mistura-admin-mistura-admin-menu ul.nice-menu li {
+  border: 1px solid #e2e2e2;
   border-top: 0;
   float: left; /* LTR */
   background-color: #FFF;
@@ -65,64 +65,64 @@ body.page-admin-website-settings #page-title .page-title span.icon {
     rgb(242,242,242) 100%
     );
 }
-#block-features-admin-features-admin-menu ul.nice-menu li:hover {
+#block-mistura-admin-mistura-admin-menu ul.nice-menu li:hover {
   float: left;
   background: #f4f4f4;
 }
-#block-features-admin-features-admin-menu ul.nice-menu li a {
+#block-mistura-admin-mistura-admin-menu ul.nice-menu li a {
   padding: 10px 10px 10px 36px;
   color:#444;
   background-repeat: no-repeat;
   background-position: 10px center;
 }
-#block-features-admin-features-admin-menu ul.nice-menu ul {
+#block-mistura-admin-mistura-admin-menu ul.nice-menu ul {
   top: 1.8em;
   left: -1px;
   border: 0;
   border-top: 1px solid #ccc;
   margin-right: 0;
 }
-#block-features-admin-features-admin-menu ul.nice-menu ul li {
+#block-mistura-admin-mistura-admin-menu ul.nice-menu ul li {
   width: 200px;
 }
-#block-features-admin-features-admin-menu ul.nice-menu ul li a {
+#block-mistura-admin-mistura-admin-menu ul.nice-menu ul li a {
   padding: 10px;
   color:#444;
 }
-#block-features-admin-features-admin-menu ul.nice-menu li a span {
+#block-mistura-admin-mistura-admin-menu ul.nice-menu li a span {
   display: block;
 }
 /******************************
  VERTICAL (right)
 ******************************/
-#block-features-admin-features-admin-menu ul.nice-menu-right  {
+#block-mistura-admin-mistura-admin-menu ul.nice-menu-right  {
   width: 200px;
 }
-#block-features-admin-features-admin-menu ul.nice-menu-right li {
+#block-mistura-admin-mistura-admin-menu ul.nice-menu-right li {
   width: 198px;
 }
-#block-features-admin-features-admin-menu ul.nice-menu-right ul,
-#block-features-admin-features-admin-menu ul.nice-menu-right ul ul{
+#block-mistura-admin-mistura-admin-menu ul.nice-menu-right ul,
+#block-mistura-admin-mistura-admin-menu ul.nice-menu-right ul ul{
   width: 200px;
   left: 198px;
   top: -1px;
 }
-#block-features-admin-features-admin-menu ul.nice-menu-right li.menuparent > a span,
-#block-features-admin-features-admin-menu ul.nice-menu-right li li.menuparent > a span {
+#block-mistura-admin-mistura-admin-menu ul.nice-menu-right li.menuparent > a span,
+#block-mistura-admin-mistura-admin-menu ul.nice-menu-right li li.menuparent > a span {
   background: url(../images/icons/arrow-right.png) right center no-repeat;
 }
 
 /* icones */
-#block-features-admin-features-admin-menu .menu-path-admin-website > a {
+#block-mistura-admin-mistura-admin-menu .menu-path-admin-mistura > a {
   background-image: url(../images/icons/home.png);
 }
-#block-features-admin-features-admin-menu .menu-path-admin-website-settings > a {
+#block-mistura-admin-mistura-admin-menu .menu-path-admin-mistura-settings > a {
   background-image: url(../images/icons/settings.png);
 }
-#block-features-admin-features-admin-menu .menu-path-user-edit > a {
+#block-mistura-admin-mistura-admin-menu .menu-path-user-edit > a {
   background-image: url(../images/icons/user_edit.png);
 }
-#block-features-admin-features-admin-menu .menu-path-user-logout > a { 
+#block-mistura-admin-mistura-admin-menu .menu-path-user-logout > a { 
   background-image: url(../images/icons/logout.png);
 }
 
@@ -130,11 +130,11 @@ body.page-admin-website-settings #page-title .page-title span.icon {
  * Configurações
 */
 /* removendo opcao de escolher o formato de texto */
-.page-admin-website-settings .text-format-wrapper .form-item {
+.page-admin-mistura-settings .text-format-wrapper .form-item {
   border: 0 !important;
   padding: 0;
 }
-.page-admin-website-settings .filter-wrapper {
+.page-admin-mistura-settings .filter-wrapper {
   display: none !important;
 } 
 

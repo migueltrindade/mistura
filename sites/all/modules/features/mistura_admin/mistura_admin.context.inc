@@ -1,21 +1,21 @@
 <?php
 /**
  * @file
- * features_admin.context.inc
+ * mistura_admin.context.inc
  */
 
 /**
  * Implements hook_context_default_contexts().
  */
-function features_admin_context_default_contexts() {
+function mistura_admin_context_default_contexts() {
   $export = array();
 
   $context = new stdClass();
   $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
   $context->api_version = 3;
-  $context->name = 'website_admin_sitewide';
+  $context->name = 'mistura_admin_sitewide';
   $context->description = '';
-  $context->tag = 'website';
+  $context->tag = 'mistura';
   $context->conditions = array(
     'path' => array(
       'values' => array(
@@ -39,34 +39,34 @@ function features_admin_context_default_contexts() {
     ),
     'user' => array(
       'values' => array(
-        'authenticated user' => 'authenticated user',
+        'admin' => 'admin',
       ),
     ),
   );
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
-        'features_admin-features_admin_menu' => array(
-          'module' => 'features_admin',
-          'delta' => 'features_admin_menu',
+        'mistura_admin-mistura_admin_menu' => array(
+          'module' => 'mistura_admin',
+          'delta' => 'mistura_admin_menu',
           'region' => 'sidebar_first',
           'weight' => '-10',
         ),
-        'features_website-features_block_1' => array(
-          'module' => 'features_website',
-          'delta' => 'features_block_1',
+        'mistura_website-mistura_block_1' => array(
+          'module' => 'mistura_website',
+          'delta' => 'mistura_block_1',
           'region' => 'sidebar_first',
           'weight' => '-9',
         ),
-        'features_website-features_block_2' => array(
-          'module' => 'features_website',
-          'delta' => 'features_block_2',
+        'mistura_website-mistura_block_2' => array(
+          'module' => 'mistura_website',
+          'delta' => 'mistura_block_2',
           'region' => 'sidebar_first',
           'weight' => '-8',
         ),
-        'features_website-features_redes_sociais' => array(
-          'module' => 'features_website',
-          'delta' => 'features_redes_sociais',
+        'mistura_website-mistura_redes_sociais' => array(
+          'module' => 'mistura_website',
+          'delta' => 'mistura_redes_sociais',
           'region' => 'sidebar_first',
           'weight' => '-7',
         ),
@@ -77,8 +77,8 @@ function features_admin_context_default_contexts() {
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('website');
-  $export['website_admin_sitewide'] = $context;
+  t('mistura');
+  $export['mistura_admin_sitewide'] = $context;
 
   return $export;
 }

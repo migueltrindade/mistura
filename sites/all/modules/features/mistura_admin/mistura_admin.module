@@ -3,7 +3,7 @@
 /**
  * @file
  */
-include_once 'features_admin.features.inc';
+include_once 'mistura_admin.features.inc';
 
 
 /**
@@ -14,12 +14,12 @@ define('ROLE_ADMIN', 3);
 /**
  * Implements hook_permission().
  */
-function features_admin_permission() {
+function mistura_admin_permission() {
   return array(
-    'access website admin' => array(
+    'acessar mistura admin' => array(
       'title' => t('Acessar administração do website'),
     ),
-    'administer website' => array(
+    'administrar mistura' => array(
       'title' => t('Administrar o website'),
     ),
   );
@@ -28,43 +28,37 @@ function features_admin_permission() {
 /**
  * Implements hook_menu().
  */
-function features_admin_menu() {
+function mistura_admin_menu() {
 
   $items = array();
 
-  $items['admin/website'] = array(
-    'title' => 'Website admin',
+  $items['admin/mistura'] = array(
+    'title' => 'Mistura',
     'description' => 'Dashboard de administração',
-    'page callback' => 'features_admin_dashboard',
+    'page callback' => 'mistura_admin_dashboard',
     'access callback' => 'user_access',
-    'access arguments' => array('access website admin'),
+    'access arguments' => array('acessar mistura admin'),
     'type' => MENU_NORMAL_ITEM,
-    'file' => 'features_admin.pages.inc',
+    'file' => 'includes/pages.inc',
   );
 
-  $items['admin/website/home'] = array(
-    'title' => 'Home',
-    'type' => MENU_DEFAULT_LOCAL_TASK,
-    'weight' => -50,
-  );
-
-  $items['admin/website/settings'] = array(
+  $items['admin/mistura/settings'] = array(
     'title' => 'Configurações',
     'description' => 'Configurações do website',
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('features_admin_settings'),
-    'access arguments' => array('administer website'),
-    'file' => 'features_admin.admin.inc',
-    'type' => MENU_LOCAL_TASK,
-    'weight' => 100
+    'page arguments' => array('mistura_admin_settings'),
+    'access arguments' => array('administrar mistura'),
+    'file' => 'includes/admin.inc',
+		'menu_name' => 'menu-admin-menu',
+		'weight' => 48
   );
   
   $items['user/edit'] = array(
     'title' => 'Minha conta',
-    'page callback' => 'features_admin_redirect_user_edit',
-    'access arguments' => array('access website admin'),
+    'page callback' => 'mistura_admin_redirect_user_edit',
+    'access arguments' => array('acessar mistura admin'),
     'type' => MENU_NORMAL_ITEM,
-    'file' => 'features_admin.admin.inc',
+		'file' => 'includes/admin.inc',
     'menu_name' => 'menu-admin-menu',
     'weight' => 49
   );
@@ -75,13 +69,13 @@ function features_admin_menu() {
 /**
  * Implements hook_init().
  */
-function features_admin_init() {
+function mistura_admin_init() {
   
   $contexts = context_active_contexts();
   
-  if (array_key_exists('website_admin_sitewide', $contexts)) {
-    drupal_add_js(drupal_get_path('module', 'features_admin') . '/js/features_admin.js', array('group' => JS_THEME, 'every_page' => TRUE));
-    drupal_add_css(drupal_get_path('module', 'features_admin') . '/css/features_admin.css', array('group' => CSS_THEME, 'every_page' => TRUE));
+  if (array_key_exists('mistura_admin_sitewide', $contexts)) {
+    drupal_add_js(drupal_get_path('module', 'mistura_admin') . '/js/mistura_admin.js', array('group' => JS_THEME, 'every_page' => TRUE));
+    drupal_add_css(drupal_get_path('module', 'mistura_admin') . '/css/mistura_admin.css', array('group' => CSS_THEME, 'every_page' => TRUE));
   }
 
   // jQuery Easing Plugin.
@@ -108,7 +102,7 @@ function features_admin_init() {
  *
  * Adds an extra class to Admin menu items.
  */
-function features_admin_preprocess_menu_link(&$variables) {
+function mistura_admin_preprocess_menu_link(&$variables) {
   if (isset($variables['element']['#theme']) && $variables['element']['#theme'] === 'menu_link__menu_admin_menu') {
     $classname = array_pop(explode('/', $variables['element']['#href']));
     $variables['element']['#attributes']['class'][] = $classname;
@@ -118,8 +112,8 @@ function features_admin_preprocess_menu_link(&$variables) {
 /**
  * Implements hook_block_info().
  */
-function features_admin_block_info() {
-  $blocks['features_admin_menu'] = array(
+function mistura_admin_block_info() {
+  $blocks['mistura_admin_menu'] = array(
     'info' => t('Features admin menu'),
     'cache' => DRUPAL_NO_CACHE,
   );
@@ -129,13 +123,13 @@ function features_admin_block_info() {
 /**
  * Implements hook_block_view().
  */
-function features_admin_block_view($delta = '') {
+function mistura_admin_block_view($delta = '') {
   $block = array();
 
   switch ($delta) {
-    case 'features_admin_menu':
+    case 'mistura_admin_menu':
       $block['subject'] = '';
-      $block['content'] = features_admin_get_menu_admin();
+      $block['content'] = mistura_admin_get_menu_admin();
       break;
   }
   return $block;
@@ -146,9 +140,9 @@ function features_admin_block_view($delta = '') {
  * 
  * @return html  
  */
-function features_admin_get_menu_admin() {
+function mistura_admin_get_menu_admin() {
   $variables = array(
-    'id' => 'features_admin_menu',
+    'id' => 'mistura_admin_menu',
     'menu_name' => 'menu-admin-menu',
     'direction' => 'right',
     'depth' => -1
@@ -160,15 +154,15 @@ function features_admin_get_menu_admin() {
 /**
  * Implements hook_form_alter().
  */
-function features_admin_form_alter(&$form, &$form_state, $form_id) { 
+function mistura_admin_form_alter(&$form, &$form_state, $form_id) {
   unset($form['actions']['preview']);
 }
 
 /**
  * Implements hook_user_login
  */
-function features_admin_user_login(&$edit, $account) {
+function mistura_admin_user_login(&$edit, $account) {
   if (empty($_GET['destination']) && (!isset($_POST['form_id']) || $_POST['form_id'] != 'user_pass_reset')) {
-    drupal_goto('admin/website');
+    drupal_goto('admin/mistura');
   }
 }

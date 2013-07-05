@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Root directory of Drupal installation.
+ * Defines the root directory of the Drupal installation.
  */
 define('DRUPAL_ROOT', getcwd());
 
@@ -27,6 +27,9 @@ define('DRUPAL_ROOT', getcwd());
  */
 define('MAINTENANCE_MODE', 'update');
 
+/**
+ * Renders a form with a list of available database updates.
+ */
 function update_selection_page() {
   drupal_set_title('Drupal database update');
   $elements = drupal_get_form('update_script_selection_form');
@@ -37,6 +40,9 @@ function update_selection_page() {
   return $output;
 }
 
+/**
+ * Form constructor for the list of available database module updates.
+ */
 function update_script_selection_form($form, &$form_state) {
   $count = 0;
   $incompatible_count = 0;
@@ -141,21 +147,27 @@ function update_script_selection_form($form, &$form_state) {
   return $form;
 }
 
+/**
+ * Provides links to the homepage and administration pages.
+ */
 function update_helpful_links() {
-  // NOTE: we can't use l() here because the URL would point to
-  // 'update.php?q=admin'.
   $links[] = '<a href="' . base_path() . '">Front page</a>';
-  $links[] = '<a href="' . base_path() . '?q=admin">Administration pages</a>';
+  if (user_access('access administration pages')) {
+    $links[] = '<a href="' . base_path() . '?q=admin">Administration pages</a>';
+  }
   return $links;
 }
 
+/**
+ * Displays results of the update script with any accompanying errors.
+ */
 function update_results_page() {
   drupal_set_title('Drupal database update');
   $links = update_helpful_links();
 
   update_task_list();
   // Report end result.
-  if (module_exists('dblog')) {
+  if (module_exists('dblog') && user_access('access site reports')) {
     $log_message = ' All errors have been <a href="' . base_path() . '?q=admin/reports/dblog">logged</a>.';
   }
   else {
@@ -163,7 +175,7 @@ function update_results_page() {
   }
 
   if ($_SESSION['update_success']) {
-    $output = '<p>Updates were attempted. If you see no failures below, you may proceed happily to the <a href="' . base_path() . '?q=admin">administration pages</a>. Otherwise, you may need to update your database manually.' . $log_message . '</p>';
+    $output = '<p>Updates were attempted. If you see no failures below, you may proceed happily back to your <a href="' . base_path() . '">site</a>. Otherwise, you may need to update your database manually.' . $log_message . '</p>';
   }
   else {
     list($module, $version) = array_pop(reset($_SESSION['updates_remaining']));
@@ -229,6 +241,15 @@ function update_results_page() {
   return $output;
 }
 
+/**
+ * Provides an overview of the Drupal database update.
+ *
+ * This page provides cautionary suggestions that should happen before
+ * proceeding with the update to ensure data integrity.
+ *
+ * @return
+ *   Rendered HTML form.
+ */
 function update_info_page() {
   // Change query-strings on css/js files to enforce reload for all users.
   _drupal_flush_css_js();
@@ -254,6 +275,12 @@ function update_info_page() {
   return $output;
 }
 
+/**
+ * Renders a 403 access denied page for update.php.
+ *
+ * @return
+ *   Rendered HTML warning with 403 status.
+ */
 function update_access_denied_page() {
   drupal_add_http_header('Status', '403 Forbidden');
   watchdog('access denied', 'update.php', NULL, WATCHDOG_WARNING);
@@ -292,7 +319,7 @@ function update_access_allowed() {
 }
 
 /**
- * Add the update task list to the current page.
+ * Adds the update task list to the current page.
  */
 function update_task_list($active = NULL) {
   // Default list of tasks.
@@ -308,8 +335,7 @@ function update_task_list($active = NULL) {
 }
 
 /**
- * Returns (and optionally stores) extra requirements that only apply during
- * particular parts of the update.php process.
+ * Returns and stores extra requirements that apply during the update process.
  */
 function update_extra_requirements($requirements = NULL) {
   static $extra_requirements = array();
@@ -320,7 +346,7 @@ function update_extra_requirements($requirements = NULL) {
 }
 
 /**
- * Check update requirements and report any errors or (optionally) warnings.
+ * Checks update requirements and reports errors and (optionally) warnings.
  *
  * @param $skip_warnings
  *   (optional) If set to TRUE, requirement warnings will be ignored, and a

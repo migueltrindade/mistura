@@ -7,6 +7,27 @@ jQuery.noConflict();
 (function ($) {
 
 /**
+ * Override jQuery.fn.init to guard against XSS attacks.
+ *
+ * See http://bugs.jquery.com/ticket/9521
+ */
+var jquery_init = $.fn.init;
+$.fn.init = function (selector, context, rootjQuery) {
+  // If the string contains a "#" before a "<", treat it as invalid HTML.
+  if (selector && typeof selector === 'string') {
+    var hash_position = selector.indexOf('#');
+    if (hash_position >= 0) {
+      var bracket_position = selector.indexOf('<');
+      if (bracket_position > hash_position) {
+        throw 'Syntax error, unrecognized expression: ' + selector;
+      }
+    }
+  }
+  return jquery_init.call(this, selector, context, rootjQuery);
+};
+$.fn.init.prototype = jquery_init.prototype;
+
+/**
  * Attach all registered behaviors to a page element.
  *
  * Behaviors are event-triggered actions that attach to page elements, enhancing
@@ -164,7 +185,7 @@ Drupal.formatString = function(str, args) {
     str = str.replace(key, args[key]);
   }
   return str;
-}
+};
 
 /**
  * Translate strings to the page language or a given language.

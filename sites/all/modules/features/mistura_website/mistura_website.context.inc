@@ -1,21 +1,21 @@
 <?php
 /**
  * @file
- * features_website.context.inc
+ * mistura_website.context.inc
  */
 
 /**
  * Implements hook_context_default_contexts().
  */
-function features_website_context_default_contexts() {
+function mistura_website_context_default_contexts() {
   $export = array();
 
   $context = new stdClass();
   $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
   $context->api_version = 3;
-  $context->name = 'website_frontpage';
+  $context->name = 'mistura_frontpage';
   $context->description = '';
-  $context->tag = 'website';
+  $context->tag = 'mistura';
   $context->conditions = array(
     'path' => array(
       'values' => array(
@@ -28,19 +28,19 @@ function features_website_context_default_contexts() {
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('website');
-  $export['website_frontpage'] = $context;
+  t('mistura');
+  $export['mistura_frontpage'] = $context;
 
   $context = new stdClass();
   $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
   $context->api_version = 3;
-  $context->name = 'website_sitewide';
+  $context->name = 'mistura_sitewide';
   $context->description = '';
-  $context->tag = 'website';
+  $context->tag = 'mistura';
   $context->conditions = array(
     'context' => array(
       'values' => array(
-        '~website_admin_sitewide' => '~website_admin_sitewide',
+        '~mistura_admin_sitewide' => '~mistura_admin_sitewide',
       ),
     ),
     'sitewide' => array(
@@ -54,8 +54,8 @@ function features_website_context_default_contexts() {
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('website');
-  $export['website_sitewide'] = $context;
+  t('mistura');
+  $export['mistura_sitewide'] = $context;
 
   return $export;
 }

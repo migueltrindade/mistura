@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * features_admin.features.user_permission.inc
+ * mistura_admin.features.user_permission.inc
  */
 
 /**
  * Implements hook_user_default_permissions().
  */
-function features_admin_user_default_permissions() {
+function mistura_admin_user_default_permissions() {
   $permissions = array();
 
   // Exported permission: access administration menu.
@@ -28,22 +28,22 @@ function features_admin_user_default_permissions() {
     'module' => 'system',
   );
 
-  // Exported permission: access website admin.
-  $permissions['access website admin'] = array(
-    'name' => 'access website admin',
+  // Exported permission: acessar mistura admin.
+  $permissions['acessar mistura admin'] = array(
+    'name' => 'acessar mistura admin',
     'roles' => array(
       0 => 'admin',
     ),
-    'module' => 'features_admin',
+    'module' => 'mistura_admin',
   );
 
-  // Exported permission: administer website.
-  $permissions['administer website'] = array(
-    'name' => 'administer website',
+  // Exported permission: administrar mistura.
+  $permissions['administrar mistura'] = array(
+    'name' => 'administrar mistura',
     'roles' => array(
       0 => 'admin',
     ),
-    'module' => 'features_admin',
+    'module' => 'mistura_admin',
   );
 
   // Exported permission: view the administration theme.

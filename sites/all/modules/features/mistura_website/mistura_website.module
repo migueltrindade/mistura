@@ -1,25 +1,25 @@
 <?php
 /**
  * @file
- * Code for the features_website feature.
+ * Code for the mistura_website feature.
  */
 
-include_once 'features_website.features.inc';
+include_once 'mistura_website.features.inc';
 
 /**
  * Implements hook_init().
  */
-function features_website_init() {
-  drupal_add_js(drupal_get_path('module', 'features_website') . '/js/features_website.js');
-  drupal_add_css(drupal_get_path('module', 'features_website') . '/css/features_website.css');
+function mistura_website_init() {
+  drupal_add_js(drupal_get_path('module', 'mistura_website') . '/js/mistura_website.js');
+  drupal_add_css(drupal_get_path('module', 'mistura_website') . '/css/mistura_website.css');
 }
 
 /**
  * Implements hook_block_info().
  */
-function features_website_block_info() {
-  module_load_include('inc', 'features_admin', 'features_admin.admin');
-  $blocos = features_admin_retorna_blocos_info();
+function mistura_website_block_info() {
+  module_load_include('inc', 'mistura_admin', 'includes/admin');
+  $blocos = mistura_admin_retorna_blocos_info();
   foreach ($blocos as $index => $bloco) {
     $blocks[$index] = array(
       'info' => t($bloco['title']),
@@ -27,7 +27,7 @@ function features_website_block_info() {
     );
   }
 
-  $blocks['features_redes_sociais'] = array(
+  $blocks['mistura_redes_sociais'] = array(
     'info' => 'Redes sociais',
     'cache' => DRUPAL_NO_CACHE
   );
@@ -38,18 +38,18 @@ function features_website_block_info() {
 /**
  * Implements hook_block_view().
  */
-function features_website_block_view($delta = '') {
+function mistura_website_block_view($delta = '') {
 
   $block = array();
   $block['subject'] = '';
   $block['content'] = '';
 
-  if ($delta == 'features_redes_sociais') {
+  if ($delta == 'mistura_redes_sociais') {
 
     $block['subject'] = 'Redes Sociais';
 
-    module_load_include('inc', 'features_admin', 'features_admin.admin');
-    $redes_sociais = features_admin_retorna_redes_sociais();
+    module_load_include('inc', 'mistura_admin', 'includes/admin');
+    $redes_sociais = mistura_admin_retorna_redes_sociais();
     $lista = array();
 
     foreach ($redes_sociais as $social_index_name => $rede_social) {

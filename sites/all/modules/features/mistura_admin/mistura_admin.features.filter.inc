@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * features_admin.features.filter.inc
+ * mistura_admin.features.filter.inc
  */
 
 /**
  * Implements hook_filter_default_formats().
  */
-function features_admin_filter_default_formats() {
+function mistura_admin_filter_default_formats() {
   $formats = array();
 
   // Exported format: Full html.
@@ -74,7 +74,7 @@ function features_admin_filter_default_formats() {
         'weight' => '0',
         'status' => '1',
         'settings' => array(
-          'filter_url_length' => '72',
+          'filter_url_length' => 72,
         ),
       ),
     ),

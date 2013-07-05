@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * features_admin.features.menu_custom.inc
+ * mistura_admin.features.menu_custom.inc
  */
 
 /**
  * Implements hook_menu_default_menu_custom().
  */
-function features_admin_menu_default_menu_custom() {
+function mistura_admin_menu_default_menu_custom() {
   $menus = array();
 
   // Exported menu: main-menu.

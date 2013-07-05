@@ -1,7 +1,7 @@
 (function($){
   "use strict";
 
-  Drupal.behaviors.features_admin = {
+  Drupal.behaviors.mistura_admin = {
     attach: function(context, settings) {
       // Add smooth "Back to Top" animation.
       var $toplink = $('a.action-top', context);
