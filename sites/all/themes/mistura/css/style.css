@@ -25,12 +25,8 @@
   color: #FFFFFF;
   text-shadow: none;
 }
-html {
-  background: url('../images/bg.jpg') 0 0 repeat;
-}
 body {
-  /*background : url('../images/bg-header.jpg') 0 0 repeat-x;*/
-
+  background: url('../images/bg.jpg') 0 0 repeat;
 }
 a {
   color: #222222;
@@ -60,7 +56,55 @@ h3 {
  */
 .outside-top {
   background: url('../images/bg-outside-top.jpg') 0 0 repeat;
-  padding: 50px 0;
+  padding: 35px 0;
+  font-family: 'Open Sans';
+  font-weight: 300;
+}
+.outside-top .region-outside-top-right .webform-component,
+.outside-top .region-outside-top-right .form-item {
+  margin: 0;
+}
+.outside-top a.fechar {
+  float: right;
+}
+.outside-top h3 {
+  margin: 0;
+  color: #5c2781;
+}
+.outside-top a {
+  color: #5c2781;
+}
+#block-block-2 h3 {
+  display: none;
+}
+#block-block-2 .content {
+  padding: 52px 0 0;
+  background: url('../images/icone-telefone.png') 30px 0 no-repeat;
+}
+#block-webform-client-block-3 input[type="text"],
+#block-webform-client-block-3 input[type="email"],
+#block-webform-client-block-3 textarea {
+  background: #AAAAAA;
+  color: white;
+}
+#block-webform-client-block-3 #webform-component-mensagem {
+  float: right;
+}
+#block-webform-client-block-3 #webform-component-nome,
+#block-webform-client-block-3 #webform-component-e-mail,
+#block-webform-client-block-3 #webform-component-telefone {
+  overflow: hidden;
+}
+#block-webform-client-block-3 textarea {
+  width: 220px;
+  height: 80px;
+  resize: none;
+}
+#block-webform-client-block-3 #edit-actions {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
 }
 /**
  * Header
@@ -73,13 +117,6 @@ h3 {
 .header-page {
   min-height: 67px;
   line-height: 65px;
-}
-/* Destaque */
-.destaque {
-  border-top: 1px solid #491B69;
-  min-height: 200px;
-  background: url('../images/bg-destaque.jpg') 0 0 repeat;
-  padding: 50px 0;
 }
 /**
  * Menu Principal
@@ -95,33 +132,41 @@ h3 {
 .header-page .region-header .block-menu li {
   display: inline-block;
   color: white;
+  margin-right: 15px;
+}
+.header-page .region-header .block-menu li.last {
+  margin-right: 0;
 }
 .header-page .region-header .block-menu li a {
   color: white;
   text-transform: uppercase;
+  font-size: 11px;
 }
 .header-page .region-header .block-menu li a.active,
 .header-page .region-header .block-menu li a:hover {
   color: #ec7c1e;
 }
 .header-page .region-header .block-menu li span.icone {
-  width: 20px;
   height: 30px;
   line-height: 65px;
   display: block;
   float: left;
-  margin: 0 10px 0 0;
+  margin: 0 5px 0 0;
 }
 .header-page .region-header .block-menu li.menu-234 span {
+  width: 41px;
   background: url('../images/menu_quemsomos.png') 0 0 no-repeat;
 }
 .header-page .region-header .block-menu li.menu-235 span {
+  width: 35px;
   background: url('../images/menu_portfolio.png') 0 0 no-repeat;
 }
 .header-page .region-header .block-menu li.menu-255 span {
+  width: 35px;
   background: url('../images/menu_contato.png') 0 0 no-repeat;
 }
 .header-page .region-header .block-menu li.menu-256 span {
+  width: 24px;
   background: url('../images/menu_trabalheconosco.png') 0 0 no-repeat;
 }
 /**
@@ -145,6 +190,38 @@ h3 {
   border-radius: 16px;
   float: left;
 }
+/* Destaque */
+.destaque {
+  border-top: 1px solid #491B69;
+  background: url('../images/bg-destaque.jpg') 0 0 repeat;
+  padding: 50px 0;
+}
+/**
+ * Main content
+ */
+.main-content {
+  padding: 0 0 50px;
+  min-height: 350px;
+}
+/**
+ * Footer
+ */
+.footer-page {
+  background-color: #491b69;
+  background-image: url('../images/bg-footer-center.jpg');
+  background-position: top center;
+  background-repeat: no-repeat;
+  padding: 30px 0;
+  color: white;
+  text-align: center;
+  position: relative;
+}
+.footer-page img {
+  position: absolute;
+  top: -23px;
+  left: 50%;
+  margin-left: -27px;
+}
 /* Large desktop */
 @media (min-width: 1200px) {
   
@@ -158,13 +235,12 @@ h3 {
   body {
     padding: 0;
   }
+  .outside-top {
+    padding: 0 20px;
+  }
 }
 /* Landscape phones and down */
 @media (max-width: 480px) {
   
 }
 /* remove page title and first time message from home */
-.front .page-title,
-#first-time {
-  display: none;
-}

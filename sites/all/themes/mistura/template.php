@@ -32,11 +32,11 @@ function mistura_preprocess_page(&$vars) {
   $classes = array();
   if ($vars['page']['sidebar_first'] || $vars['page']['sidebar_second']) {
     $classes['sidebar'] = 'span3';
-    $classes['content'] = 'span9 main-content';
+    $classes['content'] = 'span9';
   }
   elseif (!$vars['page']['sidebar_first'] && !$vars['page']['sidebar_second']) {
     $classes['sidebar'] = '';
-    $classes['content'] = 'span12 main-content';
+    $classes['content'] = 'span12';
   }
   $vars['bs_sidebar'] = $classes['sidebar'];
   $vars['bs_content'] = $classes['content'];

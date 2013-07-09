@@ -58,6 +58,12 @@ function mistura_website_context_default_contexts() {
           'region' => 'header',
           'weight' => '-8',
         ),
+        'block-3' => array(
+          'module' => 'block',
+          'delta' => '3',
+          'region' => 'footer',
+          'weight' => '-10',
+        ),
         'mistura_website-mistura_redes_sociais' => array(
           'module' => 'mistura_website',
           'delta' => 'mistura_redes_sociais',
