@@ -21,7 +21,9 @@ regions[highlighted] = Highlighted
 ; custom regions
 regions[redes_sociais] = Redes sociais
 
-regions[outside_top] = Outside Top
+regions[outside_top_left] = Outside Top Left
+regions[outside_top_center] = Outside Top Center
+regions[outside_top_right] = Outside Top Right
 regions[preface] = Preface
 regions[content_top] = Content Top
 regions[content_bottom] = Content Bottom

@@ -1,9 +1,12 @@
 name = mistura_website
 core = 7.x
 package = mistura
+php = 5.2.4
+dependencies[] = block
 dependencies[] = context
 dependencies[] = ctools
+dependencies[] = webform
 features[context][] = mistura_frontpage
 features[context][] = mistura_sitewide
 features[ctools][] = context:context:3
-features[mistura_api][] = api:1
+features[features_api][] = api:1

@@ -5,6 +5,16 @@
 	<h2 title="<?php print $site_slogan; ?>" class="site-slogan"><?php print $site_slogan; ?></h2>
 <?php endif; ?>
 
+<div class="outside-top">
+	<div class="container">
+		<div class="row-fluid">
+			<div class="span3"><?php print render($page['outside_top_left']); ?></div>
+			<div class="span3"><?php print render($page['outside_top_center']); ?></div>
+			<div class="span6"><?php print render($page['outside_top_right']); ?></div>
+		</div>
+	</div>
+</div>
+
 <div class="wrapper-header-page">
 
 	<div class="container">
@@ -35,7 +45,9 @@
 </div>
 
 <div class="destaque">
-
+	<div class="container">
+		<img src="/sites/all/themes/mistura/images/destaque01.png"/>
+	</div>
 </div>
 
 <div class="container">

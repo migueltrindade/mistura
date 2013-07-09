@@ -12,6 +12,11 @@ include_once 'mistura_website.features.inc';
 function mistura_website_init() {
   drupal_add_js(drupal_get_path('module', 'mistura_website') . '/js/mistura_website.js');
   drupal_add_css(drupal_get_path('module', 'mistura_website') . '/css/mistura_website.css');
+
+//	variable_del('mistura_entre_contato');
+//	variable_del('mistura_telefones');
+//	variable_del('mistura_block_1');
+//	variable_del('mistura_block_2');
 }
 
 /**
@@ -52,10 +57,13 @@ function mistura_website_block_view($delta = '') {
     $redes_sociais = mistura_admin_retorna_redes_sociais();
     $lista = array();
 
+		$count = 0;
     foreach ($redes_sociais as $social_index_name => $rede_social) {
       $url_rede_social = variable_get($social_index_name, '');
       if (!empty($url_rede_social)) {
-        $lista[] = l($rede_social['titulo'], $url_rede_social, array('html' => true, 'attributes' => array('title' => $rede_social['titulo'], 'target' => '_blank')));
+        $lista[$count]['data'] = l($rede_social['titulo'], $url_rede_social, array('html' => true, 'attributes' => array('title' => $rede_social['titulo'], 'target' => '_blank')));
+				$lista[$count]['classe']  = 'social-icon ' . $social_index_name;
+				$count++;
       }
     }
     $content = '';

@@ -49,7 +49,42 @@ function mistura_website_context_default_contexts() {
       ),
     ),
   );
-  $context->reactions = array();
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'system-main-menu' => array(
+          'module' => 'system',
+          'delta' => 'main-menu',
+          'region' => 'header',
+          'weight' => '-8',
+        ),
+        'mistura_website-mistura_redes_sociais' => array(
+          'module' => 'mistura_website',
+          'delta' => 'mistura_redes_sociais',
+          'region' => 'redes_sociais',
+          'weight' => '-10',
+        ),
+        'block-1' => array(
+          'module' => 'block',
+          'delta' => '1',
+          'region' => 'outside_top_left',
+          'weight' => '-10',
+        ),
+        'block-2' => array(
+          'module' => 'block',
+          'delta' => '2',
+          'region' => 'outside_top_center',
+          'weight' => '-10',
+        ),
+        'webform-client-block-3' => array(
+          'module' => 'webform',
+          'delta' => 'client-block-3',
+          'region' => 'outside_top_right',
+          'weight' => '-10',
+        ),
+      ),
+    ),
+  );
   $context->condition_mode = 1;
 
   // Translatables

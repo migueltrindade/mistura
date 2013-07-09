@@ -73,13 +73,29 @@ function mistura_breadcrumb($vars) {
   }
 }
 
+function mistura_menu_link(array $variables) {
 
-function mistura_links__system_main_menu(&$vars) {
-	krumo($vars);
-	foreach ($vars['links'] as &$link) {
-		// do what you need here...
-		$link['title'] = '<span>' . $link['title'] . '</span>';
-		$link['html'] = TRUE;
+	$element = $variables['element'];
+	$sub_menu = '';
+
+	$element['#attributes']['class'][] = 'menu-' . $element['#original_link']['mlid'];
+
+	$switch = 0;
+	if ($element['#below']) {
+		$sub_menu = drupal_render($element['#below']);
+		$switch = 1;
 	}
-	return theme_links($vars);
+
+	$element['#localized_options']['html'] = TRUE;
+
+	if($switch == 0) {
+		$linktext = '<span class="icone"></span>' . $element['#title'] . '';
+	}
+	else {
+		$linktext = $element['#title'];
+	}
+
+	$output = l($linktext, $element['#href'], $element['#localized_options']);
+
+	return '<li' . drupal_attributes($element['#attributes']) . '>' . $output . $sub_menu . "</li>\n";
 }
