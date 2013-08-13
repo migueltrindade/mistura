@@ -13,6 +13,7 @@
 				<div class="row-fluid">
 					<div class="span6"><?php print render($page['outside_top_left']); ?></div>
 					<div class="span6"><?php print render($page['outside_top_center']); ?></div>
+
 				</div>
 			</div>
 			<div class="span6"><?php print render($page['outside_top_right']); ?></div>

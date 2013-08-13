@@ -76,6 +76,7 @@ h2, h3 {
 	padding     : 35px 0;
 	font-family : 'Open Sans';
 	font-weight : 300;
+	display     : block;
 }
 .outside-top .region-outside-top-right .webform-component,
 .outside-top .region-outside-top-right .form-item {
@@ -98,25 +99,56 @@ h2, h3 {
 
 #block-block-2 .content {
 	padding    : 52px 0 0;
-	background : url('../images/icone-telefone.png') 30px 0 no-repeat;
-}
-#block-webform-client-block-3 input[type="text"],
-#block-webform-client-block-3 input[type="email"],
-#block-webform-client-block-3 textarea {
-	background : #AAAAAA;
-	color      : white;
+	background : url('../images/icone-telefone.png') center top no-repeat;
+	text-align : center;
 }
 
-#block-webform-client-block-3 #webform-component-mensagem {
-	float : right;
+#block-webform-client-block-3 input[type=text],
+#block-webform-client-block-3 input[type=email],
+#block-webform-client-block-3 textarea {
+	background-color : #C6CBC8;
+	border-color     : #898891;
+	.radius(15px);
 }
+#block-webform-client-block-3 input[type=text]:focus,
+#block-webform-client-block-3 input[type=email]:focus,
+#block-webform-client-block-3 textarea:focus {
+	background-color : #E2E2E2;
+	box-shadow       : 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(132, 104, 160, 0.6);
+	outline          : 0 none;
+}
+#block-webform-client-block-3 textarea {
+	width  : 98%;
+	resize : none;
+}
+#block-webform-client-block-3 input[type=email] {
+	width              : 100%;
+	-webkit-box-sizing : border-box;
+	-moz-box-sizing    : border-box;
+	box-sizing         : border-box;
+	padding            : 15px 10px;
+	height             : 70px;
+}
+#block-webform-client-block-3 input[type=submit] {
+	color   : white;
+	border  : none;
+	padding : 10px;
+	.radius(15px);
+}
+
+//#block-webform-client-block-3 input[type="text"],
+//#block-webform-client-block-3 input[type="email"],
+//#block-webform-client-block-3 textarea {
+//	background : #AAAAAA;
+//	color      : white;
+//}
+
 #block-webform-client-block-3 #webform-component-nome,
 #block-webform-client-block-3 #webform-component-e-mail,
 #block-webform-client-block-3 #webform-component-telefone {
 	overflow : hidden;
 }
 #block-webform-client-block-3 textarea {
-	width  : 220px;
 	height : 80px;
 	resize : none;
 }
@@ -159,8 +191,7 @@ h2, h3 {
 	margin-right : 15px;
 }
 .header-page .region-header .block-menu li.last {
-	margin-right: 0;
-
+	margin-right : 0;
 }
 .header-page .region-header .block-menu li a {
 	color          : white;
@@ -230,8 +261,8 @@ h2, h3 {
  * Main content
  */
 .main-content {
-	padding : 0 0 50px;
-	min-height: 350px;
+	padding    : 0 0 50px;
+	min-height : 350px;
 }
 
 /**
