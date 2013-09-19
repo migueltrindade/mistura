@@ -1,6 +1,14 @@
 <?php
 
 /**
+ * Implements template_preprocess_html();
+ */
+function mistura_preprocess_html(&$vars) {
+  drupal_add_css('http://fonts.googleapis.com/css?family=Titillium+Web:400,200,200italic,300,300italic,400italic,600,600italic,700,700italic', array('type' => 'external'));
+}
+
+
+/**
  * Implements template_html_head_alter();
  *
  * Changes the default meta content-type tag to the shorter HTML5 version
@@ -20,10 +28,7 @@ function mistura_preprocess_search_block_form(&$vars) {
   $vars['search_form'] = str_replace('type="text"', 'type="search"', $vars['search_form']);
 }
 
-/**
- * Implements template_preprocess_html();
- */
-function mistura_preprocess_html(&$vars) { }
+
 
 /**
  * Implements template_preprocess_page();
@@ -73,29 +78,29 @@ function mistura_breadcrumb($vars) {
   }
 }
 
-function mistura_menu_link(array $variables) {
-
-	$element = $variables['element'];
-	$sub_menu = '';
-
-	$element['#attributes']['class'][] = 'menu-' . $element['#original_link']['mlid'];
-
-	$switch = 0;
-	if ($element['#below']) {
-		$sub_menu = drupal_render($element['#below']);
-		$switch = 1;
-	}
-
-	$element['#localized_options']['html'] = TRUE;
-
-	if($switch == 0) {
-		$linktext = '<span class="icone"></span>' . $element['#title'] . '';
-	}
-	else {
-		$linktext = $element['#title'];
-	}
-
-	$output = l($linktext, $element['#href'], $element['#localized_options']);
-
-	return '<li' . drupal_attributes($element['#attributes']) . '>' . $output . $sub_menu . "</li>\n";
-}
+//function mistura_menu_link(array $variables) {
+//
+//	$element = $variables['element'];
+//	$sub_menu = '';
+//
+//	$element['#attributes']['class'][] = 'menu-' . $element['#original_link']['mlid'];
+//
+//	$switch = 0;
+//	if ($element['#below']) {
+//		$sub_menu = drupal_render($element['#below']);
+//		$switch = 1;
+//	}
+//
+//	$element['#localized_options']['html'] = TRUE;
+//
+//	if($switch == 0) {
+//		$linktext = '<span class="icone"></span>' . $element['#title'] . '';
+//	}
+//	else {
+//		$linktext = $element['#title'];
+//	}
+//
+//	$output = l($linktext, $element['#href'], $element['#localized_options']);
+//
+//	return '<li' . drupal_attributes($element['#attributes']) . '>' . $output . $sub_menu . "</li>\n";
+//}

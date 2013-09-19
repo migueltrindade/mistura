@@ -23,7 +23,30 @@ function mistura_website_context_default_contexts() {
       ),
     ),
   );
-  $context->reactions = array();
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'mc-mc_descricao' => array(
+          'module' => 'mc',
+          'delta' => 'mc_descricao',
+          'region' => 'descricao',
+          'weight' => '-10',
+        ),
+        'mc-mc_servicos' => array(
+          'module' => 'mc',
+          'delta' => 'mc_servicos',
+          'region' => 'servicos',
+          'weight' => '-10',
+        ),
+        'mc-mc_cases' => array(
+          'module' => 'mc',
+          'delta' => 'mc_cases',
+          'region' => 'cases',
+          'weight' => '-10',
+        ),
+      ),
+    ),
+  );
   $context->condition_mode = 0;
 
   // Translatables
@@ -64,28 +87,16 @@ function mistura_website_context_default_contexts() {
           'region' => 'footer',
           'weight' => '-10',
         ),
-        'mistura_website-mistura_redes_sociais' => array(
+        'mistura_website-mistura_block_2' => array(
           'module' => 'mistura_website',
-          'delta' => 'mistura_redes_sociais',
-          'region' => 'redes_sociais',
+          'delta' => 'mistura_block_2',
+          'region' => 'footer_left',
           'weight' => '-10',
         ),
-        'block-1' => array(
-          'module' => 'block',
-          'delta' => '1',
-          'region' => 'outside_top_left',
-          'weight' => '-10',
-        ),
-        'block-2' => array(
-          'module' => 'block',
-          'delta' => '2',
-          'region' => 'outside_top_center',
-          'weight' => '-10',
-        ),
-        'webform-client-block-3' => array(
-          'module' => 'webform',
-          'delta' => 'client-block-3',
-          'region' => 'outside_top_right',
+        'mistura_website-mistura_block_1' => array(
+          'module' => 'mistura_website',
+          'delta' => 'mistura_block_1',
+          'region' => 'footer_right',
           'weight' => '-10',
         ),
       ),

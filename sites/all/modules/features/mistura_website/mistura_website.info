@@ -5,6 +5,7 @@ php = 5.2.4
 dependencies[] = block
 dependencies[] = context
 dependencies[] = ctools
+dependencies[] = mc
 dependencies[] = webform
 features[context][] = mistura_frontpage
 features[context][] = mistura_sitewide

@@ -3,31 +3,31 @@ description = Mistura theme
 core = 7.x
 engine = phptemplate
 
-stylesheets[all][] = css/bootstrap.min.css
-stylesheets[all][] = css/bootstrap-responsive.min.css
+; style
+stylesheets[all][] = css/animations.css
+stylesheets[all][] = css/font-awesome.min.css
 stylesheets[all][] = css/style.css
 
+; scripts
+scripts[] = js/bootstrap.min.js
 scripts[] = js/main.js
 
 ; default regions
 regions[header] = Header
+regions[help] = Help
+regions[highlighted] = Highlighted
 regions[sidebar_first] = Sidebar First
 regions[sidebar_second] = Sidebar Second
 regions[content] = Content
 regions[footer] = Footer
-regions[help] = Help
-regions[highlighted] = Highlighted
+
+; custom regions front-page
+regions[descricao] = Descrição
+regions[servicos] = Serviços
+regions[cases] = Cases
 
 ; custom regions
-regions[redes_sociais] = Redes sociais
-
-regions[outside_top_left] = Outside Top Left
-regions[outside_top_center] = Outside Top Center
-regions[outside_top_right] = Outside Top Right
-regions[preface] = Preface
 regions[content_top] = Content Top
 regions[content_bottom] = Content Bottom
-regions[postscript] = Postscript
-regions[footer_top] = Footer Top
-regions[footer_bottom] = Footer Bottom
-regions[outside_bottom] = Outside Bottom
+regions[footer_left] = Footer Left
+regions[footer_right] = Footer Right

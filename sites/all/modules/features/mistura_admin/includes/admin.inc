@@ -86,7 +86,6 @@ function mistura_admin_settings() {
 				'#type'          => $bloco_info['type_field'],
 				'#title'         => $bloco_info['title'],
 				'#default_value' => variable_get($bloco_index, ''),
-				'#required'      => TRUE
 			);
 
 			if ($bloco_info['type_field'] === 'text_format') {
@@ -134,6 +133,7 @@ function mistura_admin_settings_submit($form, &$form_state) {
 			}
 		}
 	}
+  drupal_set_message('Configurações salvas com sucesso.');
 }
 
 /**
@@ -147,9 +147,9 @@ function mistura_admin_retorna_redes_sociais() {
 		'mistura_social_linkedin' => array(
 			'titulo' => t('Linkedin')
 		),
-//		'mistura_social_twitter'  => array(
-//			'titulo' => t('Twitter')
-//		)
+		'mistura_social_twitter'  => array(
+			'titulo' => t('Twitter')
+		)
 	);
 }
 
@@ -159,16 +159,16 @@ function mistura_admin_retorna_redes_sociais() {
  */
 function mistura_admin_retorna_blocos_info() {
 	return array(
-//		'mistura_entre_contato' => array(
-//      'title' => t('Entre em contato'),
-//			'type_field' => 'text_format',
-//			'format' => 'simple'
-//    ),
-//    'mistura_telefones' => array(
-//      'title' => t('Telefones'),
-//      'type_field' => 'text_format',
-//      'format' => 'simple'
-//    )
+		'mistura_block_1' => array(
+      'title' => t('Entre em contato'),
+			'type_field' => 'text_format',
+			'format' => 'full_html'
+    ),
+    'mistura_block_2' => array(
+      'title' => t('Onde estamos'),
+      'type_field' => 'text_format',
+      'format' => 'full_html'
+    )
 	);
 }
 

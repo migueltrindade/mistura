@@ -1,0 +1,4 @@
+name = Mistura custom
+description = Módulos contendo customizações
+core = 7.x
+package = mistura

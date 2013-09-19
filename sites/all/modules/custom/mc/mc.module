@@ -1,0 +1,165 @@
+<?php
+
+/**
+ * Implements hook_init().
+ */
+function mc_init() {
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function mc_block_info() {
+  $return = array();
+
+  $return['mc_descricao'] = array(
+    'info'  => t('Mistura Custom: Descrição'),
+    'cache' => DRUPAL_CACHE_GLOBAL,
+  );
+
+  $return['mc_servicos'] = array(
+    'info'  => t('Mistura Custom: Serviços'),
+    'cache' => DRUPAL_CACHE_GLOBAL,
+  );
+
+  $return['mc_cases'] = array(
+    'info'  => t('Mistura Custom: Cases'),
+    'cache' => DRUPAL_CACHE_GLOBAL,
+  );
+
+  return $return;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function mc_block_view($delta = '') {
+  $block = array();
+
+  switch ($delta) {
+    case 'mc_descricao':
+      $block['subject'] = t('O que fazemos?');
+      $block['content'] = array(
+        '#markup' => mc_descricao_home(),
+      );
+      break;
+
+    case 'mc_servicos':
+      $block['subject'] = t('Serviços');
+      $block['content'] = array(
+        '#markup' => mc_servicos_home(),
+      );
+      break;
+
+    case 'mc_cases':
+      $block['subject'] = t('Cases');
+      $block['content'] = array(
+        '#markup' => mc_cases_home(),
+      );
+      break;
+
+  }
+
+  return $block;
+}
+
+/**
+ * Bloco Descrição Frontpage
+ *
+ * @return mixed
+ */
+function mc_descricao_home() {
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node');
+  $query->entityCondition('bundle', array('servicos'));
+  $results = $query->execute();
+
+  $output = '';
+
+  if (!empty($results['node'])) {
+    $nodes = array_keys($results['node']);
+    $lista = array();
+    $count = 0;
+    foreach ($nodes as $nid) {
+      $node                     = node_load($nid);
+      $wrapper                  = entity_metadata_wrapper('node', $node);
+      $lista[$count]['data']    = $wrapper->title->value();
+      $lista[$count]['class'][] = 'alohanenen';
+      $count++;
+    }
+
+    $output .= theme('item_list', array('items' => $lista));
+  }
+  else {
+    $output = '';
+  }
+  return $output;
+}
+
+/**
+ * Bloco Serviços Frontpage
+ *
+ * @return mixed
+ */
+function mc_servicos_home() {
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node');
+  $query->entityCondition('bundle', array('servicos'));
+  $results = $query->execute();
+
+  $output = '';
+  include_once drupal_get_path('module', 'devel') . '/krumo/class.krumo.php';
+
+  if (!empty($results['node'])) {
+    $nodes = array_keys($results['node']);
+    include_once drupal_get_path('module', 'devel') . '/krumo/class.krumo.php';
+
+    $lista = array();
+    $count = 0;
+    foreach ($nodes as $nid) {
+      $node                     = node_load($nid);
+      $wrapper                  = entity_metadata_wrapper('node', $node);
+      $lista[$count]['data']    = $wrapper->title->value();
+      $lista[$count]['class'][] = 'alohanenen';
+      $count++;
+    }
+
+    $output .= theme('item_list', array('items' => $lista));
+  }
+  else {
+    $output = '';
+  }
+  return $output;
+}
+
+/**
+ * Bloco Cases Frontpage
+ *
+ * @return mixed
+ */
+function mc_cases_home() {
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node');
+  $query->entityCondition('bundle', array('servicos'));
+  $results = $query->execute();
+
+  $output = '';
+
+  if (!empty($results['node'])) {
+    $nodes = array_keys($results['node']);
+    $lista = array();
+    $count = 0;
+    foreach ($nodes as $nid) {
+      $node                     = node_load($nid);
+      $wrapper                  = entity_metadata_wrapper('node', $node);
+      $lista[$count]['data']    = $wrapper->title->value();
+      $lista[$count]['class'][] = 'alohanenen';
+      $count++;
+    }
+    $output .= theme('item_list', array('items' => $lista));
+  }
+  else {
+    $output = '';
+  }
+  return $output;
+}

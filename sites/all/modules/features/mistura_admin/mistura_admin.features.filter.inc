@@ -74,7 +74,7 @@ function mistura_admin_filter_default_formats() {
         'weight' => '0',
         'status' => '1',
         'settings' => array(
-          'filter_url_length' => 72,
+          'filter_url_length' => '72',
         ),
       ),
     ),
