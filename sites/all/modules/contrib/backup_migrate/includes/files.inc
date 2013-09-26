@@ -6,6 +6,8 @@
  * General file handling code for Backup and Migrate.
  */
 
+define('BACKUP_MIGRATE_FILENAME_MAXLENGTH', 255);
+
 /**
  * Add a file to the temporary files list for deletion when we're done.
  */
@@ -62,17 +64,33 @@ function _backup_migrate_filetypes() {
 }
 
 /**
+ * Adjust the length of a filename to allow for a string to be appended,
+ * staying within the maximum filename limit.
+ */
+function _backup_migrate_filename_append_prepare($filename, $append_str) {
+  $max_name_len = BACKUP_MIGRATE_FILENAME_MAXLENGTH - drupal_strlen($append_str);
+  if (drupal_strlen($filename) > $max_name_len) {
+    $filename = drupal_substr($filename, 0, $max_name_len);
+  }
+  return $filename;
+}
+
+/**
  * Construct a filename using token and some cleaning.
  */
-function _backup_migrate_clean_filename($filename) {
-  $filename = token_replace($filename);
-  $filename = preg_replace("/[^a-zA-Z0-9\.\-_]/", "", $filename);
-  if (drupal_strlen($filename) > 50) {
-    $filename = drupal_substr($filename, 0, 50);
+function _backup_migrate_construct_filename($filename, $timestamp='') {
+  if (module_exists('token')) {
+    $filename = token_replace($filename);
   }
+  $filename = preg_replace("/[^a-zA-Z0-9\.\-_]/", "", $filename);
+  $filename = _backup_migrate_filename_append_prepare($filename, $timestamp);
+  $filename .= '-' . $timestamp;
+  $filename = trim($filename, '-');
+
   if (drupal_strlen($filename) == 0) {
     $filename = 'untitled';
   }
+
   return $filename;
 }
 
@@ -80,7 +98,13 @@ function _backup_migrate_clean_filename($filename) {
  * Construct a default filename using the site's name.
  */
 function _backup_migrate_default_filename() {
-  return '[site:name]';
+  if (module_exists('token')) {
+    return '[site:name]';
+  }
+  else {
+    // Cleaning the string isn't strictly necessary but it looks better in the settings field.
+    return variable_get('site_name', 'backup_migrate');
+  }
 }
 
 /**

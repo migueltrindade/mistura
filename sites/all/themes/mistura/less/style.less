@@ -1,18 +1,6 @@
 @import "bootstrap.less";
 
-@bordaNavbar: #8644B4;
-@roxoPrincipal: #491B69;
-@roxoSoft: #5C2781;
-@roxoBorda: #411262;
-@roxoFooter: #5C2781;
-
-@laranjaPrincipal: #EC7C1E;
-
-@familyHeader: 'Titillium Web', sans-serif;
-
-@backgroundQuadriculado: url('../images/bg-destaque.jpg') 0 0 repeat;
-
-* {
+a {
   -webkit-transition : all 0.5s ease;
   -moz-transition    : all 0.5s ease;
   -o-transition      : all 0.5s ease;
@@ -37,6 +25,11 @@ body {
 .site-name,
 .site-slogan {
   display : none;
+}
+
+h2, h3 {
+  font-family    : @familyHeader;
+  text-transform : uppercase;
 }
 
 /**
@@ -132,11 +125,9 @@ body {
     text-shadow : 2px 2px 1px #000000;
   }
   h2 {
-    margin         : 10px 0 20px;
-    font-family    : @familyHeader;
-    text-transform : uppercase;
-    font-weight    : 700;
-    text-shadow    : 2px 2px 1px rgba(0, 0, 0, .8);
+    margin      : 10px 0 20px;
+    font-weight : 700;
+    text-shadow : 2px 2px 1px rgba(0, 0, 0, .8);
   }
   a {
     color     : white;
@@ -200,29 +191,118 @@ body {
 }
 
 .descricao {
-  background: rgb(226,226,226); /* Old browsers */
-  background: -moz-linear-gradient(left, rgba(226,226,226,1) 0%, rgba(255,255,255,1) 30%, rgba(255,255,255,1) 70%, rgba(226,226,226,1) 100%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(226,226,226,1)), color-stop(30%,rgba(255,255,255,1)), color-stop(70%,rgba(255,255,255,1)), color-stop(100%,rgba(226,226,226,1))); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(left, rgba(226,226,226,1) 0%,rgba(255,255,255,1) 30%,rgba(255,255,255,1) 70%,rgba(226,226,226,1) 100%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(left, rgba(226,226,226,1) 0%,rgba(255,255,255,1) 30%,rgba(255,255,255,1) 70%,rgba(226,226,226,1) 100%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(left, rgba(226,226,226,1) 0%,rgba(255,255,255,1) 30%,rgba(255,255,255,1) 70%,rgba(226,226,226,1) 100%); /* IE10+ */
-  background: linear-gradient(to right, rgba(226,226,226,1) 0%,rgba(255,255,255,1) 30%,rgba(255,255,255,1) 70%,rgba(226,226,226,1) 100%); /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e2e2e2', endColorstr='#e2e2e2',GradientType=1 ); /* IE6-9 */
-  height: 300px;
+  background : rgb(226, 226, 226); /* Old browsers */
+  background : -moz-linear-gradient(left, rgba(226, 226, 226, 1) 0%, rgba(255, 255, 255, 1) 30%, rgba(255, 255, 255, 1) 70%, rgba(226, 226, 226, 1) 100%); /* FF3.6+ */
+  background : -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(226, 226, 226, 1)), color-stop(30%, rgba(255, 255, 255, 1)), color-stop(70%, rgba(255, 255, 255, 1)), color-stop(100%, rgba(226, 226, 226, 1))); /* Chrome,Safari4+ */
+  background : -webkit-linear-gradient(left, rgba(226, 226, 226, 1) 0%, rgba(255, 255, 255, 1) 30%, rgba(255, 255, 255, 1) 70%, rgba(226, 226, 226, 1) 100%); /* Chrome10+,Safari5.1+ */
+  background : -o-linear-gradient(left, rgba(226, 226, 226, 1) 0%, rgba(255, 255, 255, 1) 30%, rgba(255, 255, 255, 1) 70%, rgba(226, 226, 226, 1) 100%); /* Opera 11.10+ */
+  background : -ms-linear-gradient(left, rgba(226, 226, 226, 1) 0%, rgba(255, 255, 255, 1) 30%, rgba(255, 255, 255, 1) 70%, rgba(226, 226, 226, 1) 100%); /* IE10+ */
+  background : linear-gradient(to right, rgba(226, 226, 226, 1) 0%, rgba(255, 255, 255, 1) 30%, rgba(255, 255, 255, 1) 70%, rgba(226, 226, 226, 1) 100%); /* W3C */
+  filter     : progid:DXImageTransform.Microsoft.gradient(startColorstr='#e2e2e2', endColorstr='#e2e2e2', GradientType=1); /* IE6-9 */
+  min-height : 300px;
+  text-align : center;
+  padding    : 30px 0;
+  color      : @roxoPrincipal;
+
+  h2 {
+    font-size   : 1.6em;
+    font-weight : 700;
+    color       : @laranjaPrincipal
+  }
+
+  h3 {
+    margin-bottom : 1em;
+    font-size     : 3em;
+    font-weight   : 600;
+  }
+
+  .descricao-item {
+    text-align    : center;
+    margin-bottom : 20px;
+  }
+
+//  .descricao-content {
+//    font-weight: 500;
+//  }
 }
 
 .servicos {
   background : @backgroundQuadriculado;
-  padding    : 20px 0;
+  padding    : 80px 0;
   color      : white;
+  text-align : center;
 
-  h3 {
-    display: none;
+  header h3 {
+    display : none;
+  }
+  .icone {
+    text-align : center;
+
+    .botao {
+      width               : 110px;
+      height              : 110px;
+      .border-left-radius(70px);
+      .border-right-radius(70px);
+      background-color    : white;
+      display             : inline-block;
+      text-align          : center;
+      vertical-align      : middle;
+      font-family         : @familyHeader;
+      font-size           : 18px;
+      font-weight         : 100;
+      background-repeat   : no-repeat;
+      background-position : center center;
+      .box-shadow(1px 1px 1px #000000);
+
+      span {
+        display : none;
+      }
+
+      &:hover, &:active {
+        background-color    : @laranjaPrincipal;
+        background-image    : none !important;
+        background-position : -20px -20px;
+        color               : white;
+        text-decoration     : none;
+
+        img {
+          display : none;
+        }
+
+        span {
+          display : inline;
+        }
+      }
+    }
+
+  }
+
+  .popover {
+    width     : 385px !important;
+    max-width : none;
+    height    : 200px;
+    &.left {
+      margin-left : -30px;
+    }
+    &.right {
+      margin-left : 30px;
+    }
   }
   ul, li {
     margin     : 0 !important;
     padding    : 0 !important;
     list-style : none !important;
+  }
+
+  .icone-branding {
+    width: 80px;
+    height: auto;
+    text-align: center;
+    &:hover {
+      circle {
+        fill : @laranjaPrincipal;
+      }
+    }
   }
 }
 
@@ -236,7 +316,11 @@ body {
 /* No media query since this is the default in Bootstrap */
 
 /* Small devices (tablets, 768px and up) */
-@media (max-width: @screen-xs-max) {
+@media (min-width: @screen-xs-max) {
+
+  .servicos {
+    text-align : left;
+  }
   .footer-page {
     padding : 20px 0;
     .divider {
@@ -251,10 +335,28 @@ body {
 
 /* Medium devices (desktops, 992px and up) */
 @media (min-width: @screen-md) {
-
+  .servicos-descricao {
+    text-align : left;
+  }
 }
 
 /* Large devices (large desktops, 1200px and up) */
 @media (min-width: @screen-lg) {
 
+  .descricao {
+    .descricao-item {
+      margin-bottom : 0;
+    }
+    .col-inner {
+      padding : 0 80px;
+    }
+  }
+}
+
+.mq {
+  -webkit-transition : width 0.001ms;
+  -moz-transition    : width 0.001ms;
+  -o-transition      : width 0.001ms;
+  transition         : width 0.001ms;
+  width              : 0;
 }

@@ -95,6 +95,11 @@ function mistura_admin_init() {
   if ($path = libraries_get_path('jquery.scrollto')) {
     drupal_add_js($path . '/jquery.scrollTo-1.4.2-min.js', array('group' => JS_LIBRARY, 'every_page' => TRUE));
   }
+
+  // jQuery Cycle Plugin.
+  if ($path = libraries_get_path('jquery.cycle')) {
+    drupal_add_js($path . '/jquery.cycle.min.js', array('group' => JS_LIBRARY, 'every_page' => TRUE));
+  }
 }
 
 /**

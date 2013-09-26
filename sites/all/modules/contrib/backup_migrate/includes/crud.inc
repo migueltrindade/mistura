@@ -507,7 +507,7 @@ class backup_migrate_item {
     );
     $form['actions'] = array('#prefix' => '<div class="container-inline">', '#suffix' => '</div>', '#weight' => 99);
     $form['actions']['submit'] = array('#type' => 'submit', '#value' => t('Save !type', array('!type' => t($this->singular))));
-    $form['actions']['cancel'] = array('#value' => l(t('Cancel'), BACKUP_MIGRATE_MENU_PATH . '/destination'));
+    $form['actions']['cancel'] = array('#markup' => l(t('Cancel'), BACKUP_MIGRATE_MENU_PATH . '/destination'));
     return $form;
   }
 
@@ -618,7 +618,11 @@ class backup_migrate_item {
     static $cache = array();
 
     // Allow other modules to declare destinations programatically.
-    $items = module_invoke_all($this->db_table);
+    $items = array();
+    foreach (module_implements($this->db_table) as $module) {
+      $fn = $module . '_' . $this->db_table;
+      $items += $fn();
+    }
 
     // Get any items stored as a variable. This allows destinations to be defined in settings.php
     $defaults = (array)variable_get($this->db_table .'_defaults', array());

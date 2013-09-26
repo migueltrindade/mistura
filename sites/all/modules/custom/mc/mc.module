@@ -7,6 +7,29 @@ function mc_init() {
 }
 
 /**
+ * Implements hook_theme().
+ */
+function mc_theme() {
+  $return = array();
+
+  $return['descricao_home'] = array(
+    'variables' => array(
+      'items' => NULL,
+    ),
+    'template'  => 'templates/descricao-home'
+  );
+
+  $return['servicos_home'] = array(
+    'variables' => array(
+      'items' => NULL,
+    ),
+    'template'  => 'templates/servicos-home'
+  );
+
+  return $return;
+}
+
+/**
  * Implements hook_block_info().
  */
 function mc_block_info() {
@@ -71,24 +94,29 @@ function mc_block_view($delta = '') {
 function mc_descricao_home() {
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'node');
-  $query->entityCondition('bundle', array('servicos'));
+  $query->entityCondition('bundle', array('descricao'));
   $results = $query->execute();
 
   $output = '';
 
   if (!empty($results['node'])) {
+    include_once drupal_get_path('module', 'devel') . '/krumo/class.krumo.php';
     $nodes = array_keys($results['node']);
     $lista = array();
     $count = 0;
     foreach ($nodes as $nid) {
-      $node                     = node_load($nid);
-      $wrapper                  = entity_metadata_wrapper('node', $node);
-      $lista[$count]['data']    = $wrapper->title->value();
-      $lista[$count]['class'][] = 'alohanenen';
+      $node    = node_load($nid);
+      $wrapper = entity_metadata_wrapper('node', $node);
+
+      $uri                        = $wrapper->field_icone->value();
+      $url                        = file_create_url($uri['uri']);
+      $lista[$count]['title']     = $wrapper->title->value();
+      $lista[$count]['imagem']    = theme('image', array('path' => $url));
+      $lista[$count]['descricao'] = $wrapper->body->value->value();
       $count++;
     }
 
-    $output .= theme('item_list', array('items' => $lista));
+    $output .= theme('descricao_home', array('items' => $lista));
   }
   else {
     $output = '';
@@ -117,14 +145,24 @@ function mc_servicos_home() {
     $lista = array();
     $count = 0;
     foreach ($nodes as $nid) {
-      $node                     = node_load($nid);
-      $wrapper                  = entity_metadata_wrapper('node', $node);
-      $lista[$count]['data']    = $wrapper->title->value();
-      $lista[$count]['class'][] = 'alohanenen';
+      $node    = node_load($nid);
+      $wrapper = entity_metadata_wrapper('node', $node);
+      $uri     = $wrapper->field_icone->value();
+      $url     = file_create_url($uri['uri']);
+
+      $image = theme('image', array('path' => $url));
+
+      $lista[$count]['title']      = $wrapper->title->value();
+      $lista[$count]['imagem']     = $image;
+      $lista[$count]['attributes'] = array(
+        'style' => array('background-image: url("' . $url . '")')
+      );
+
+      $lista[$count]['descricao'] = $wrapper->body->value->value();
       $count++;
     }
 
-    $output .= theme('item_list', array('items' => $lista));
+    $output .= theme('servicos_home', array('items' => $lista));
   }
   else {
     $output = '';
