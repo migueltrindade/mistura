@@ -148,12 +148,11 @@ function mc_servicos_home() {
       $node    = node_load($nid);
       $wrapper = entity_metadata_wrapper('node', $node);
       $uri     = $wrapper->field_icone->value();
+      $svg     = $wrapper->field_icone_svg->value();
       $url     = file_create_url($uri['uri']);
 
-      $image = theme('image', array('path' => $url));
-
       $lista[$count]['title']      = $wrapper->title->value();
-      $lista[$count]['imagem']     = $image;
+      $lista[$count]['imagem']     = $svg['value'];
       $lista[$count]['attributes'] = array(
         'style' => array('background-image: url("' . $url . '")')
       );

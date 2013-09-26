@@ -6024,9 +6024,9 @@ h3 {
   font-size: 16px;
 }
 .footer-page .divider {
-  border-right: 1px solid #744393;
-  -webkit-box-shadow: inset -1px 0 0px #000000;
-  box-shadow: inset -1px 0 0px #000000;
+  border-bottom: 1px solid #744393;
+  -webkit-box-shadow: inset 0 -1px 0px #000000;
+  box-shadow: inset 0 -1px 0px #000000;
 }
 .footer-page .icon-section {
   font-size: 60px;
@@ -6150,9 +6150,12 @@ h3 {
   text-align: center;
   margin-bottom: 20px;
 }
+/**
+ * Serviços
+ */
 .servicos {
   background: url('../images/bg-destaque.jpg') 0 0 repeat;
-  padding: 80px 0;
+  padding: 30px 0;
   color: white;
   text-align: center;
 }
@@ -6211,43 +6214,73 @@ h3 {
 .servicos .popover.right {
   margin-left: 30px;
 }
-.servicos ul,
-.servicos li {
-  margin: 0 !important;
-  padding: 0 !important;
-  list-style: none !important;
-}
-.servicos .icone-branding {
-  width: 80px;
+.servicos [class^="svg-"] {
+  width: 140px;
+  max-width: 100%;
   height: auto;
   text-align: center;
 }
-.servicos .icone-branding:hover circle {
+.servicos [class^="svg-"]:hover circle {
   fill: #ec7c1e;
+}
+.servicos .cycle-pager {
+  text-align: center;
+}
+.servicos .cycle-pager span {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: white;
+  font-size: 50px;
+  line-height: 1;
+  cursor: pointer;
+}
+.servicos .cycle-pager span.cycle-pager-active {
+  color: #ec7c1e;
 }
 /* Extra small devices (phones, up to 480px) */
 /* No media query since this is the default in Bootstrap */
 /* Small devices (tablets, 768px and up) */
-@media (min-width: 767px) {
+@media (min-width: 768px) and (max-width: 992px) {
   .servicos {
     text-align: left;
+  }
+  .servicos h2 {
+    margin: 0 0 20px;
   }
   .footer-page {
     padding: 20px 0;
   }
   .footer-page .divider {
-    border-bottom: 1px solid #744393;
-    -webkit-box-shadow: inset 0 -1px 0px #000000;
-    box-shadow: inset 0 -1px 0px #000000;
+    border-right: 1px solid #744393;
+    border-bottom: 0;
+    -webkit-box-shadow: inset -1px 0px 0px #000000;
+    box-shadow: inset -1px 0px 0px #000000;
   }
   .footer-page .block-mistura-website {
     margin: 30px 0 50px;
   }
 }
 /* Medium devices (desktops, 992px and up) */
-@media (min-width: 992px) {
-  .servicos-descricao {
+@media (min-width: 992px) and (max-width: 1200px) {
+  .servicos {
+    padding: 60px 0;
+  }
+  .servicos .popover {
+    width: 465px !important;
+  }
+  .servicos .servicos-descricao {
     text-align: left;
+  }
+  .footer-page {
+    padding: 20px 0;
+  }
+  .footer-page .divider {
+    border-right: 1px solid #744393;
+    border-bottom: 0px;
+    -webkit-box-shadow: inset -1px 0px 0px #000000;
+    box-shadow: inset -1px 0px 0px #000000;
+  }
+  .footer-page .block-mistura-website {
+    margin: 30px 0 50px;
   }
 }
 /* Large devices (large desktops, 1200px and up) */
@@ -6257,6 +6290,21 @@ h3 {
   }
   .descricao .col-inner {
     padding: 0 80px;
+  }
+  .servicos {
+    padding: 60px 0;
+  }
+  .footer-page {
+    padding: 20px 0;
+  }
+  .footer-page .divider {
+    border-right: 1px solid #744393;
+    border-bottom: 0px;
+    -webkit-box-shadow: inset -1px 0px 0px #000000;
+    box-shadow: inset -1px 0px 0px #000000;
+  }
+  .footer-page .block-mistura-website {
+    margin: 30px 0 50px;
   }
 }
 .mq {
